@@ -15,6 +15,45 @@ use IntlDateFormatter;
  */
 class IntlDateTimeFormatter implements DateTimeFormatter
 {
+    public const ATOM = "yyyy-MM-dd'T'HH:mm:ssxxx";
+    public const COOKIE = 'eeee, dd-MMM-yyyy HH:mm:ss zzz';
+    public const ISO8601_FULL = "yyyy-MM-dd'T'HH:mm:ssxxx";
+    public const ISO8601_DATE = 'yyyy-MM-dd';
+    public const ISO8601_TIME = 'HH:mm:ss';
+    public const ISO8601_DATETIME = "yyyy-MM-dd'T'HH:mm:ss";
+    public const RFC822 = 'eee, dd MMM yy HH:mm:ss xx';
+    public const RFC850 = 'eeee, dd-MMM-yy HH:mm:ss zzz';
+    public const RFC1036 = 'eee, dd MMM yy HH:mm:ss xx';
+    public const RFC1123 = 'eee, dd MMM yyyy HH:mm:ss xx';
+    public const RFC2822 = 'eee, dd MMM yyyy HH:mm:ss xx';
+    public const RFC3339 = "yyyy-MM-dd'T'HH:mm:ssxxx";
+    public const RFC3339_EXTENDED = "yyyy-MM-dd'T'HH:mm:ss.SSSxxx";
+    public const RFC7231 = "eee, dd MMM yyyy HH:mm:ss 'GMT'";
+    public const RSS = 'eee, dd MMM yyyy HH:mm:ss xx';
+    public const W3C = "yyyy-MM-dd'T'HH:mm:ssxxx";
+
+    /**
+     * @var string[]
+     */
+    private static $knownPatterns = [
+        self::ATOM,
+        self::COOKIE,
+        self::ISO8601_FULL,
+        self::ISO8601_DATE,
+        self::ISO8601_TIME,
+        self::ISO8601_DATETIME,
+        self::RFC822,
+        self::RFC850,
+        self::RFC1036,
+        self::RFC1123,
+        self::RFC2822,
+        self::RFC3339,
+        self::RFC3339_EXTENDED,
+        self::RFC7231,
+        self::RSS,
+        self::W3C,
+    ];
+
     /**
      * @var string[]
      */
@@ -221,5 +260,17 @@ class IntlDateTimeFormatter implements DateTimeFormatter
         }
 
         return $result;
+    }
+
+    /**
+     * Detects if the pattern is known.
+     *
+     * @param string $pattern
+     *
+     * @return bool
+     */
+    private function isKnownPattern(string $pattern): bool
+    {
+        return in_array($pattern, self::$knownPatterns, true);
     }
 }
