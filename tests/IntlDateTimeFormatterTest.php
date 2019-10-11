@@ -12,7 +12,7 @@ class IntlDateTimeFormatterTest extends TestCase
     public function test_formats_pattern(): void
     {
         $formatter = new IntlDateTimeFormatter(DefaultLocale::fromString('de-DE'));
-        $this->assertEquals('2019-02-03', $formatter->formatPattern(new DateTime('2019-02-03'), 'YYYY-MM-dd'));
+        $this->assertEquals('2019-02-03', $formatter->formatPattern(new DateTime('2019-02-03'), 'yyyy-MM-dd'));
     }
 
     public function dates(): array
@@ -135,5 +135,93 @@ class IntlDateTimeFormatterTest extends TestCase
 
         $newFormatter = $formatter->withLocale(DefaultLocale::fromString('en-US'));
         $this->assertEquals('02/01/2019', $newFormatter->formatDate(new DateTime('2019-02-01')));
+    }
+
+    public function test_formats_patterns(): void
+    {
+        $date = new \DateTime('2019-05-01 01:02:03.456', new \DateTimeZone('Europe/Berlin'));
+
+        $formatter = new IntlDateTimeFormatter(DefaultLocale::fromString('de-DE'));
+        $this->assertEquals('01.05.2019, Mittwoch', $formatter->formatPattern($date, 'dd.MM.yyyy, EEEE'));
+    }
+
+    public function patterns(): array
+    {
+        return [
+            \DateTimeInterface::ATOM => [\DateTimeInterface::ATOM, IntlDateTimeFormatter::ATOM],
+            \DateTimeInterface::COOKIE => [\DateTimeInterface::COOKIE, IntlDateTimeFormatter::COOKIE],
+            \DateTimeInterface::RFC822 => [\DateTimeInterface::RFC822, IntlDateTimeFormatter::RFC822],
+            \DateTimeInterface::RFC850 => [\DateTimeInterface::RFC850, IntlDateTimeFormatter::RFC850],
+            \DateTimeInterface::RFC1036 => [\DateTimeInterface::RFC1036, IntlDateTimeFormatter::RFC1036],
+            \DateTimeInterface::RFC1123 => [\DateTimeInterface::RFC1123, IntlDateTimeFormatter::RFC1123],
+            \DateTimeInterface::RFC2822 => [\DateTimeInterface::RFC2822, IntlDateTimeFormatter::RFC2822],
+            \DateTimeInterface::RFC3339 => [\DateTimeInterface::RFC3339, IntlDateTimeFormatter::RFC3339],
+            \DateTimeInterface::RFC3339_EXTENDED => [\DateTimeInterface::RFC3339_EXTENDED, IntlDateTimeFormatter::RFC3339_EXTENDED],
+            \DateTimeInterface::RFC7231 => [\DateTimeInterface::RFC7231, IntlDateTimeFormatter::RFC7231],
+            \DateTimeInterface::RSS => [\DateTimeInterface::RSS, IntlDateTimeFormatter::RSS],
+            \DateTimeInterface::W3C => [\DateTimeInterface::W3C, IntlDateTimeFormatter::W3C],
+        ];
+    }
+
+    /**
+     * @dataProvider patterns
+     */
+    public function test_convert_to_icu(string $phpPattern, string $icuPattern): void
+    {
+        $this->assertEquals($icuPattern, IntlDateTimeFormatter::convertToIcu($phpPattern));
+    }
+
+    /**
+     * @dataProvider patterns
+     */
+    public function test_predefined_patterns_are_equal(string $phpPattern, string $icuPattern): void
+    {
+        $date = new \DateTime('2019-05-01 01:02:03.456', new \DateTimeZone('Europe/Berlin'));
+
+        $formatter = new IntlDateTimeFormatter(DefaultLocale::fromString('en'));
+        $this->assertEquals($date->format($phpPattern), $formatter->formatPattern($date, $icuPattern));
+    }
+
+    /**
+     * @dataProvider patterns
+     */
+    public function test_predefined_patterns_are_english(string $phpPattern, string $icuPattern): void
+    {
+        $date = new \DateTime('2019-05-01 01:02:03.456', new \DateTimeZone('Europe/Berlin'));
+
+        $formatter = new IntlDateTimeFormatter(DefaultLocale::fromString('de-DE'));
+        $this->assertEquals($date->format($phpPattern), $formatter->formatPattern($date, $icuPattern));
+    }
+
+    /**
+     * @dataProvider patterns
+     */
+    public function test_formats_objects(string $phpPattern, string $icuPattern): void
+    {
+        $date = new \DateTime('2019-05-01 01:02:03.456', new \DateTimeZone('Europe/Berlin'));
+
+        $formatter = new IntlDateTimeFormatter(DefaultLocale::fromString('de-DE'));
+        $this->assertEquals($date->format($phpPattern), $formatter->formatObject($date, $icuPattern));
+
+        $calendar = \IntlCalendar::fromDateTime($date);
+        $calendar->set(\IntlCalendar::FIELD_MILLISECOND, 456);
+
+        $this->assertEquals($date->format($phpPattern), $formatter->formatObject($calendar, $icuPattern));
+    }
+
+    public function test_formats_objects_with_locale(): void
+    {
+        $date = new \DateTime('2019-05-01 01:02:03.456', new \DateTimeZone('Europe/Berlin'));
+
+        $formatter = new IntlDateTimeFormatter(DefaultLocale::fromString('en-US'));
+        $this->assertEquals('01.05.2019, Mittwoch', $formatter->formatObject($date, 'dd.MM.yyyy, EEEE', 'de-DE'));
+    }
+
+    public function test_uses_default_locale(): void
+    {
+        $date = new \DateTime('2019-05-01 01:02:03.456', new \DateTimeZone('Europe/Berlin'));
+
+        $formatter = new IntlDateTimeFormatter();
+        $this->assertEquals('2019', $formatter->formatObject($date, 'yyyy'));
     }
 }

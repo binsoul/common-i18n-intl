@@ -8,6 +8,7 @@ use BinSoul\Common\I18n\DateTimeFormatter;
 use BinSoul\Common\I18n\DefaultLocale;
 use BinSoul\Common\I18n\Locale;
 use DateTimeInterface;
+use IntlCalendar;
 use IntlDateFormatter;
 
 /**
@@ -57,7 +58,7 @@ class IntlDateTimeFormatter implements DateTimeFormatter
     /**
      * @var string[]
      */
-    private static $pattern = [
+    private static $expansionPatterns = [
         '/(?<!y)yy(?!y)/' => 'y', // 4 digit year
         '/(?<!M)M(?!M)/' => 'MM', // 2 digit month
         '/(?<!d)d(?!d)/' => 'dd', // 2 digit day
@@ -149,7 +150,12 @@ class IntlDateTimeFormatter implements DateTimeFormatter
     public function formatPattern(DateTimeInterface $datetime, string $pattern): string
     {
         $formatter = $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::NONE];
-        $formatter->setPattern($pattern);
+        $format = $this->injectTimeZone($datetime, $pattern);
+        $formatter->setPattern($format);
+
+        if ($this->isKnownPattern($pattern)) {
+            return $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::NONE]::formatObject($datetime, $format, 'en');
+        }
 
         return $formatter->format($datetime);
     }
@@ -189,14 +195,29 @@ class IntlDateTimeFormatter implements DateTimeFormatter
     }
 
     /**
-     * @param object      $object
-     * @param mixed       $format
-     * @param string|null $locale
+     * Formats an object.
+     *
+     * @param DateTimeInterface|IntlCalendar $object
+     * @param mixed                          $pattern
+     * @param string|null                    $locale
      *
      * @return string
      */
-    public function formatObject($object, $format = null, $locale = null): string
+    public function formatObject($object, $pattern = null, $locale = null): string
     {
+        $format = $pattern;
+        if (is_string($pattern)) {
+            if ($object instanceof DateTimeInterface) {
+                $format = $this->injectTimeZone($object, $pattern);
+            } elseif ($object instanceof IntlCalendar) {
+                $format = $this->injectTimeZone($object->toDateTime(), $pattern);
+            }
+
+            if ($this->isKnownPattern($pattern)) {
+                return $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::NONE]::formatObject($object, $format, 'en');
+            }
+        }
+
         return $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::NONE]::formatObject($object, $format, $locale ?? $this->locale->getCode());
     }
 
@@ -252,10 +273,31 @@ class IntlDateTimeFormatter implements DateTimeFormatter
     private function expandNumbers(string $pattern): string
     {
         $result = $pattern;
-        foreach (self::$pattern as $search => $replace) {
+        foreach (self::$expansionPatterns as $search => $replace) {
             $replaced = preg_replace($search, $replace, $result);
             if ($replaced !== null) {
                 $result = $replaced;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Replaces GMT+Offset with the short name of the time zone.
+     *
+     * @param DateTimeInterface $datetime
+     * @param string            $pattern
+     *
+     * @return string
+     */
+    private function injectTimeZone(DateTimeInterface $datetime, string $pattern): string
+    {
+        $result = $pattern;
+        if (strpos($pattern, 'z') !== false) {
+            $result = preg_replace('/(?<!z)z{1,3}(?!z)/', "'".$datetime->format('T')."'", $pattern);
+            if ($result === null) {
+                return $pattern;
             }
         }
 
