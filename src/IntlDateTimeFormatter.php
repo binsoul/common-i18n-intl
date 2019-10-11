@@ -29,6 +29,50 @@ class IntlDateTimeFormatter implements DateTimeFormatter
     ];
 
     /**
+     * @var string[]
+     */
+    private static $phpToIcu = [
+        'd' => 'dd',
+        'D' => 'eee',
+        'j' => 'd',
+        'l' => 'eeee',
+        'N' => 'e',
+        'S' => '',
+        'w' => '',
+        'z' => 'D',
+        'W' => 'w',
+        'F' => 'MMMM',
+        'm' => 'MM',
+        'M' => 'MMM',
+        'n' => 'M',
+        't' => '',
+        'L' => '',
+        'o' => 'Y',
+        'Y' => 'yyyy',
+        'y' => 'yy',
+        'a' => 'a',
+        'A' => 'a',
+        'B' => '',
+        'g' => 'h',
+        'G' => 'H',
+        'h' => 'hh',
+        'H' => 'HH',
+        'i' => 'mm',
+        's' => 'ss',
+        'u' => '',
+        'e' => 'VV',
+        'I' => '',
+        'O' => 'xx',
+        'P' => 'xxx',
+        'T' => 'zzz',
+        'Z' => '',
+        'c' => 'yyyy-MM-dd\'T\'HH:mm:ssxxx',
+        'r' => 'eee, dd MMM yyyy HH:mm:ss xx',
+        'U' => '',
+        'v' => 'SSS',
+    ];
+
+    /**
      * @var IntlDateFormatter[][]
      */
     private $formatters = [];
@@ -115,6 +159,48 @@ class IntlDateTimeFormatter implements DateTimeFormatter
     public function formatObject($object, $format = null, $locale = null): string
     {
         return $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::NONE]::formatObject($object, $format, $locale ?? $this->locale->getCode());
+    }
+
+    /**
+     * Converts the given PHP date pattern to an ICU pattern.
+     *
+     * @param string $pattern
+     *
+     * @return string
+     */
+    public static function convertToIcu(string $pattern): string
+    {
+        $parts = preg_split('/(\\\\.)/', $pattern, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+        if ($parts === false) {
+            return $pattern;
+        }
+
+        $result = '';
+        $isEscaped = false;
+        foreach ($parts as $part) {
+            if ($part[0] === '\\') {
+                if ($isEscaped) {
+                    $result .= $part[1];
+                } else {
+                    $result .= "'".$part[1];
+                }
+
+                $isEscaped = true;
+            } else {
+                if ($isEscaped) {
+                    $result .= "'";
+                    $isEscaped = false;
+                }
+
+                $result .= strtr($part, self::$phpToIcu);
+            }
+        }
+
+        if ($isEscaped) {
+            $result .= "'";
+        }
+
+        return $result;
     }
 
     /**
