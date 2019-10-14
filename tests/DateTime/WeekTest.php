@@ -83,6 +83,13 @@ class WeekTest extends TestCase
         $this->assertEquals('01', $week->getDateMedium());
         $this->assertEquals('01 2019', $week->getDateLong());
 
+        $calendar = new Calendar(new DefaultLocale('de-DE'));
+        $week = $calendar->getWeek(42, 2019);
+
+        $this->assertEquals('42', $week->getDateShort());
+        $this->assertEquals('42', $week->getDateMedium());
+        $this->assertEquals('42 2019', $week->getDateLong());
+
         $calendar = new Calendar(new DefaultLocale('ar-EG'));
         $week = $calendar->getWeek(1, 2019);
 

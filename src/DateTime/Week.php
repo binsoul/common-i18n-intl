@@ -42,7 +42,9 @@ class Week extends Point
     public function getDateLong(): string
     {
         $calendar = $this->prepareCalendar();
-        $calendar->set(IntlCalendar::FIELD_YEAR, $this->year->getNumber());
+        if ($calendar->get(IntlCalendar::FIELD_YEAR) !== $this->year->getNumber()) {
+            $calendar->set(IntlCalendar::FIELD_YEAR, $this->year->getNumber());
+        }
 
         return $this->formatter->formatObject($calendar, 'ww yyyy');
     }
