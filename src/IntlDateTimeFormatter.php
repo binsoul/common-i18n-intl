@@ -124,8 +124,6 @@ class IntlDateTimeFormatter implements DateTimeFormatter
 
     /**
      * Constructs an instance of this class.
-     *
-     * @param Locale|null $locale
      */
     public function __construct(?Locale $locale = null)
     {
@@ -200,8 +198,6 @@ class IntlDateTimeFormatter implements DateTimeFormatter
      * @param DateTimeInterface|IntlCalendar $object
      * @param mixed                          $pattern
      * @param string|null                    $locale
-     *
-     * @return string
      */
     public function formatObject($object, $pattern = null, $locale = null): string
     {
@@ -223,10 +219,6 @@ class IntlDateTimeFormatter implements DateTimeFormatter
 
     /**
      * Converts the given PHP date pattern to an ICU pattern.
-     *
-     * @param string $pattern
-     *
-     * @return string
      */
     public static function convertToIcu(string $pattern): string
     {
@@ -265,10 +257,6 @@ class IntlDateTimeFormatter implements DateTimeFormatter
 
     /**
      * Converts patterns with one digit numbers to at least 2 digits.
-     *
-     * @param string $pattern
-     *
-     * @return string
      */
     private function expandNumbers(string $pattern): string
     {
@@ -285,11 +273,6 @@ class IntlDateTimeFormatter implements DateTimeFormatter
 
     /**
      * Replaces GMT+Offset with the short name of the time zone.
-     *
-     * @param DateTimeInterface $datetime
-     * @param string            $pattern
-     *
-     * @return string
      */
     private function injectTimeZone(DateTimeInterface $datetime, string $pattern): string
     {
@@ -306,10 +289,6 @@ class IntlDateTimeFormatter implements DateTimeFormatter
 
     /**
      * Detects if the pattern is known.
-     *
-     * @param string $pattern
-     *
-     * @return bool
      */
     private function isKnownPattern(string $pattern): bool
     {

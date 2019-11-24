@@ -16,11 +16,6 @@ class Day extends Point
 
     /**
      * Constructs an instance of this class.
-     *
-     * @param int                   $number
-     * @param Month                 $month
-     * @param PointFactory          $periodFactory
-     * @param IntlDateTimeFormatter $formatter
      */
     public function __construct(int $number, Month $month, PointFactory $periodFactory, IntlDateTimeFormatter $formatter)
     {
@@ -66,8 +61,6 @@ class Day extends Point
 
     /**
      * Returns true if the day is a weekday.
-     *
-     * @return bool
      */
     public function isWeekday(): bool
     {
@@ -78,8 +71,6 @@ class Day extends Point
 
     /**
      * Returns true if the day is on a weekend.
-     *
-     * @return bool
      */
     public function isWeekend(): bool
     {
@@ -90,10 +81,6 @@ class Day extends Point
 
     /**
      * Returns true if the day the same a another day.
-     *
-     * @param Day $day
-     *
-     * @return bool
      */
     public function isSameDay(Day $day): bool
     {
@@ -102,10 +89,6 @@ class Day extends Point
 
     /**
      * Returns true if the day is in the same month.
-     *
-     * @param Month $month
-     *
-     * @return bool
      */
     public function isSameMonth(Month $month): bool
     {
@@ -114,10 +97,6 @@ class Day extends Point
 
     /**
      * Returns true if the day is in the same year.
-     *
-     * @param Year $year
-     *
-     * @return bool
      */
     public function isSameYear(Year $year): bool
     {
@@ -126,8 +105,6 @@ class Day extends Point
 
     /**
      * Returns the day after this day.
-     *
-     * @return Day
      */
     public function getNextDay(): Day
     {
@@ -139,8 +116,6 @@ class Day extends Point
 
     /**
      * Returns the day before this day.
-     *
-     * @return Day
      */
     public function getPreviousDay(): Day
     {
@@ -152,8 +127,6 @@ class Day extends Point
 
     /**
      * Returns the week of the day.
-     *
-     * @return Week
      */
     public function getWeek(): Week
     {
@@ -181,8 +154,6 @@ class Day extends Point
 
     /**
      * Returns the month of the day.
-     *
-     * @return Month
      */
     public function getMonth(): Month
     {
@@ -191,8 +162,6 @@ class Day extends Point
 
     /**
      * Returns the year of the day.
-     *
-     * @return Year
      */
     public function getYear(): Year
     {

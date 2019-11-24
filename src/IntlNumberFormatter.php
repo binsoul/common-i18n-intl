@@ -22,8 +22,6 @@ class IntlNumberFormatter implements NumberFormatter
 
     /**
      * Constructs an instance of this class.
-     *
-     * @param Locale|null $locale
      */
     public function __construct(?Locale $locale = null)
     {
@@ -79,8 +77,6 @@ class IntlNumberFormatter implements NumberFormatter
 
     /**
      * Returns a decimal number formatter.
-     *
-     * @return \NumberFormatter
      */
     private function getDecimalFormatter(): \NumberFormatter
     {
@@ -93,8 +89,6 @@ class IntlNumberFormatter implements NumberFormatter
 
     /**
      * Returns a percent formatter.
-     *
-     * @return \NumberFormatter
      */
     private function getPercentFormatter(): \NumberFormatter
     {
@@ -107,8 +101,6 @@ class IntlNumberFormatter implements NumberFormatter
 
     /**
      * Returns a currency formatter.
-     *
-     * @return \NumberFormatter
      */
     private function getCurrencyFormatter(): \NumberFormatter
     {

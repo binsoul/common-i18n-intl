@@ -102,8 +102,6 @@ class Year extends Point
 
     /**
      * Returns the first month of the year.
-     *
-     * @return Month
      */
     public function getFirstMonth(): Month
     {
@@ -116,8 +114,6 @@ class Year extends Point
 
     /**
      * Returns the last month of the year.
-     *
-     * @return Month
      */
     public function getLastMonth(): Month
     {
@@ -130,8 +126,6 @@ class Year extends Point
 
     /**
      * Returns the first week of the year.
-     *
-     * @return Week
      */
     public function getFirstWeek(): Week
     {
@@ -144,8 +138,6 @@ class Year extends Point
 
     /**
      * Returns the last week of the year.
-     *
-     * @return Week
      */
     public function getLastWeek(): Week
     {
@@ -158,8 +150,6 @@ class Year extends Point
 
     /**
      * Returns the first day of the year.
-     *
-     * @return Day
      */
     public function getFirstDay(): Day
     {
@@ -168,8 +158,6 @@ class Year extends Point
 
     /**
      * Returns the last day of the year.
-     *
-     * @return Day
      */
     public function getLastDay(): Day
     {

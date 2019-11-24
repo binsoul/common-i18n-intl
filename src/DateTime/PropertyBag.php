@@ -100,8 +100,6 @@ class PropertyBag implements IteratorAggregate, Countable, ArrayAccess
      * Returns true if the property is defined.
      *
      * @param string $key The key
-     *
-     * @return bool
      */
     public function has(string $key): bool
     {
@@ -110,8 +108,6 @@ class PropertyBag implements IteratorAggregate, Countable, ArrayAccess
 
     /**
      * Removes a property.
-     *
-     * @param string $key
      */
     public function remove(string $key)
     {
@@ -120,8 +116,6 @@ class PropertyBag implements IteratorAggregate, Countable, ArrayAccess
 
     /**
      * Returns an iterator for properties.
-     *
-     * @return ArrayIterator
      */
     public function getIterator(): ArrayIterator
     {
@@ -130,8 +124,6 @@ class PropertyBag implements IteratorAggregate, Countable, ArrayAccess
 
     /**
      * Returns the number of properties.
-     *
-     * @return int
      */
     public function count(): int
     {

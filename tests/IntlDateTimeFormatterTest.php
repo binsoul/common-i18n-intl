@@ -27,9 +27,6 @@ class IntlDateTimeFormatterTest extends TestCase
     }
 
     /**
-     * @param string $locale
-     * @param string $expected
-     *
      * @dataProvider dates
      */
     public function test_formats_date(string $locale, string $expected): void
@@ -49,9 +46,6 @@ class IntlDateTimeFormatterTest extends TestCase
     }
 
     /**
-     * @param string $locale
-     * @param string $expected
-     *
      * @dataProvider times
      */
     public function test_formats_time(string $locale, string $expected): void
@@ -71,9 +65,6 @@ class IntlDateTimeFormatterTest extends TestCase
     }
 
     /**
-     * @param string $locale
-     * @param string $expected
-     *
      * @dataProvider timesWithSeconds
      */
     public function test_formats_time_with_seconds(string $locale, string $expected): void
@@ -93,9 +84,6 @@ class IntlDateTimeFormatterTest extends TestCase
     }
 
     /**
-     * @param string $locale
-     * @param string $expected
-     *
      * @dataProvider dateTimes
      */
     public function test_formats_dateTimes(string $locale, string $expected): void
@@ -115,9 +103,6 @@ class IntlDateTimeFormatterTest extends TestCase
     }
 
     /**
-     * @param string $locale
-     * @param string $expected
-     *
      * @dataProvider dateTimesWithSeconds
      */
     public function test_formats_dateTimes_with_seconds(string $locale, string $expected): void

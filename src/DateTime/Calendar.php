@@ -6,9 +6,9 @@ namespace BinSoul\Common\I18n\Intl\DateTime;
 
 use BinSoul\Common\I18n\DefaultLocale;
 use BinSoul\Common\I18n\DefaultTimeZone;
+use BinSoul\Common\I18n\Intl\IntlDateTimeFormatter;
 use BinSoul\Common\I18n\Locale;
 use BinSoul\Common\I18n\TimeZone;
-use BinSoul\Common\I18n\Intl\IntlDateTimeFormatter;
 use DateInterval;
 use DateTime;
 use DateTimeInterface;
@@ -30,9 +30,6 @@ class Calendar
 
     /**
      * Constructs an instance of this class.
-     *
-     * @param Locale|null   $locale
-     * @param TimeZone|null $timeZone
      */
     public function __construct(?Locale $locale = null, ?TimeZone $timeZone = null)
     {
@@ -50,10 +47,6 @@ class Calendar
 
     /**
      * Returns a year.
-     *
-     * @param int $year
-     *
-     * @return Year
      */
     public function getYear(int $year): Year
     {
@@ -62,11 +55,6 @@ class Calendar
 
     /**
      * Returns one month of a year.
-     *
-     * @param int $month
-     * @param int $year
-     *
-     * @return Month
      */
     public function getMonth(int $month, int $year): Month
     {
@@ -75,11 +63,6 @@ class Calendar
 
     /**
      * Returns one week of a year.
-     *
-     * @param int $week
-     * @param int $year
-     *
-     * @return Week
      */
     public function getWeek(int $week, int $year): Week
     {
@@ -88,12 +71,6 @@ class Calendar
 
     /**
      * Returns one day of a year.
-     *
-     * @param int $day
-     * @param int $month
-     * @param int $year
-     *
-     * @return Day
      */
     public function getDay(int $day, int $month, int $year): Day
     {
@@ -102,10 +79,6 @@ class Calendar
 
     /**
      * Returns a day for the given DateTime object.
-     *
-     * @param DateTimeInterface $dateTime
-     *
-     * @return Day
      */
     public function fromDate(DateTimeInterface $dateTime): Day
     {
@@ -114,8 +87,6 @@ class Calendar
 
     /**
      * Returns the day before today.
-     *
-     * @return Day
      */
     public function yesterday(): Day
     {
@@ -124,8 +95,6 @@ class Calendar
 
     /**
      * Returns the current day.
-     *
-     * @return Day
      */
     public function today(): Day
     {
@@ -134,8 +103,6 @@ class Calendar
 
     /**
      * Returns the day after today.
-     *
-     * @return Day
      */
     public function tomorrow(): Day
     {
@@ -144,8 +111,6 @@ class Calendar
 
     /**
      * Returns the week before the current week.
-     *
-     * @return Week
      */
     public function lastWeek(): Week
     {
@@ -154,8 +119,6 @@ class Calendar
 
     /**
      * Returns the current week.
-     *
-     * @return Week
      */
     public function thisWeek(): Week
     {
@@ -164,8 +127,6 @@ class Calendar
 
     /**
      * Returns the week after the current week.
-     *
-     * @return Week
      */
     public function nextWeek(): Week
     {
@@ -175,7 +136,7 @@ class Calendar
     /**
      * Returns the names of the weekdays starting with monday.
      *
-     * @return array
+     * @return string[]
      */
     public function getDayOfWeekNames(): array
     {

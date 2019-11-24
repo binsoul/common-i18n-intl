@@ -16,11 +16,6 @@ class Week extends Point
 
     /**
      * Constructs an instance of this class.
-     *
-     * @param int                   $number
-     * @param Year                  $year
-     * @param PointFactory          $periodFactory
-     * @param IntlDateTimeFormatter $formatter
      */
     public function __construct(int $number, Year $year, PointFactory $periodFactory, IntlDateTimeFormatter $formatter)
     {
@@ -87,8 +82,6 @@ class Week extends Point
 
     /**
      * Returns the week after this week.
-     *
-     * @return Week
      */
     public function getNextWeek(): Week
     {
@@ -105,8 +98,6 @@ class Week extends Point
 
     /**
      * Returns the week before this week.
-     *
-     * @return Week
      */
     public function getPreviousWeek(): Week
     {
@@ -123,8 +114,6 @@ class Week extends Point
 
     /**
      * Returns the first day of the week.
-     *
-     * @return Day
      */
     public function getFirstDay(): Day
     {
@@ -135,8 +124,6 @@ class Week extends Point
 
     /**
      * Returns the last day of the week.
-     *
-     * @return Day
      */
     public function getLastDay(): Day
     {
@@ -150,8 +137,6 @@ class Week extends Point
 
     /**
      * Returns the year of the week.
-     *
-     * @return Year
      */
     public function getYear(): Year
     {
@@ -171,10 +156,6 @@ class Week extends Point
 
     /**
      * Checks if the date is the local end of the week.
-     *
-     * @param IntlCalendar $c
-     *
-     * @return bool
      */
     private function isEndOfWeek(IntlCalendar $c): bool
     {

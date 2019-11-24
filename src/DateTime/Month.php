@@ -16,11 +16,6 @@ class Month extends Point
 
     /**
      * Constructs an instance of this class.
-     *
-     * @param int                   $number
-     * @param Year                  $year
-     * @param PointFactory          $periodFactory
-     * @param IntlDateTimeFormatter $formatter
      */
     public function __construct(int $number, Year $year, PointFactory $periodFactory, IntlDateTimeFormatter $formatter)
     {
@@ -72,8 +67,6 @@ class Month extends Point
 
     /**
      * Returns the month after this month.
-     *
-     * @return Month
      */
     public function getNextMonth(): Month
     {
@@ -85,8 +78,6 @@ class Month extends Point
 
     /**
      * Returns the month before this month.
-     *
-     * @return Month
      */
     public function getPreviousMonth(): Month
     {
@@ -98,8 +89,6 @@ class Month extends Point
 
     /**
      * Returns the first day of the month.
-     *
-     * @return Day
      */
     public function getFirstDay(): Day
     {
@@ -112,8 +101,6 @@ class Month extends Point
 
     /**
      * Returns the last day of the month.
-     *
-     * @return Day
      */
     public function getLastDay(): Day
     {
@@ -191,8 +178,6 @@ class Month extends Point
 
     /**
      * Returns the year of the month.
-     *
-     * @return Year
      */
     public function getYear(): Year
     {
@@ -211,10 +196,6 @@ class Month extends Point
 
     /**
      * Checks if the date is the local end of the week.
-     *
-     * @param IntlCalendar $c
-     *
-     * @return bool
      */
     private function isEndOfWeek(IntlCalendar $c): bool
     {

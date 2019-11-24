@@ -32,10 +32,6 @@ abstract class Point
 
     /**
      * Constructs an instance of this class.
-     *
-     * @param int                   $number
-     * @param PointFactory          $factory
-     * @param IntlDateTimeFormatter $formatter
      */
     public function __construct(int $number, PointFactory $factory, IntlDateTimeFormatter $formatter)
     {
@@ -46,8 +42,6 @@ abstract class Point
 
     /**
      * Returns the number associated with this point.
-     *
-     * @return int
      */
     public function getNumber(): int
     {
@@ -56,8 +50,6 @@ abstract class Point
 
     /**
      * Returns the DateTime of this point.
-     *
-     * @return DateTime
      */
     public function getDateTime(): DateTime
     {
@@ -68,10 +60,6 @@ abstract class Point
 
     /**
      * Formats the point using the given pattern.
-     *
-     * @param string $pattern
-     *
-     * @return string
      */
     public function format(string $pattern): string
     {
@@ -82,8 +70,6 @@ abstract class Point
 
     /**
      * Returns the PropertyBag for this point.
-     *
-     * @return PropertyBag
      */
     public function getProperties(): PropertyBag
     {
@@ -96,8 +82,6 @@ abstract class Point
 
     /**
      * Initializes a calendar.
-     *
-     * @return IntlCalendar
      */
     abstract protected function prepareCalendar(): IntlCalendar;
 }

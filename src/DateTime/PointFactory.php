@@ -48,9 +48,6 @@ class PointFactory
 
     /**
      * Constructs an instance of this class.
-     *
-     * @param IntlCalendar          $calendar
-     * @param IntlDateTimeFormatter $formatter
      */
     public function __construct(IntlCalendar $calendar, IntlDateTimeFormatter $formatter)
     {
@@ -61,8 +58,6 @@ class PointFactory
 
     /**
      * Returns the calendar.
-     *
-     * @return IntlCalendar
      */
     public function getCalendar(): IntlCalendar
     {
@@ -71,10 +66,6 @@ class PointFactory
 
     /**
      * Returns a year.
-     *
-     * @param int $year
-     *
-     * @return Year
      */
     public function getYear(int $year): Year
     {
@@ -87,11 +78,6 @@ class PointFactory
 
     /**
      * Returns a month.
-     *
-     * @param int $month
-     * @param int $year
-     *
-     * @return Month
      */
     public function getMonth(int $month, int $year): Month
     {
@@ -109,11 +95,6 @@ class PointFactory
 
     /**
      * Returns a week.
-     *
-     * @param int $week
-     * @param int $year
-     *
-     * @return Week
      */
     public function getWeek(int $week, int $year): Week
     {
@@ -140,12 +121,6 @@ class PointFactory
 
     /**
      * Returns a day.
-     *
-     * @param int $day
-     * @param int $month
-     * @param int $year
-     *
-     * @return Day
      */
     public function getDay(int $day, int $month, int $year): Day
     {
