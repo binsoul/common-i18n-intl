@@ -82,4 +82,11 @@ class IntlNumberFormatterTest extends TestCase
         $newFormatter = $formatter->withLocale(DefaultLocale::fromString('en-US'));
         $this->assertEquals('$1,001.12', $newFormatter->formatCurrency(1001.12345, 'USD'));
     }
+
+    public function test_uses_default_locale(): void
+    {
+        $formatter1 = new IntlNumberFormatter();
+        $formatter2 = new IntlNumberFormatter(DefaultLocale::fromString(\Locale::getDefault()));
+        $this->assertEquals($formatter2->formatCurrency(1001.12345), $formatter1->formatCurrency(1001.12345));
+    }
 }

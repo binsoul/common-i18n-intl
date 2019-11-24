@@ -2,6 +2,7 @@
 
 namespace BinSoul\Common\I18n\Intl;
 
+use BinSoul\Common\I18n\DefaultLocale;
 use BinSoul\Common\I18n\Locale;
 use BinSoul\Common\I18n\NumberFormatter;
 
@@ -22,10 +23,14 @@ class IntlNumberFormatter implements NumberFormatter
     /**
      * Constructs an instance of this class.
      *
-     * @param Locale $locale
+     * @param Locale|null $locale
      */
-    public function __construct(Locale $locale)
+    public function __construct(?Locale $locale = null)
     {
+        if (!$locale) {
+            $locale = DefaultLocale::fromString(\Locale::getDefault());
+        }
+
         $this->locale = $locale;
     }
 
