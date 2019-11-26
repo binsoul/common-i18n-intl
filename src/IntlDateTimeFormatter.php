@@ -127,11 +127,7 @@ class IntlDateTimeFormatter implements DateTimeFormatter
      */
     public function __construct(?Locale $locale = null)
     {
-        if (!$locale) {
-            $locale = DefaultLocale::fromString(\Locale::getDefault());
-        }
-
-        $this->locale = $locale;
+        $this->locale = $locale ?? DefaultLocale::fromString(\Locale::getDefault());
 
         $types = [IntlDateFormatter::NONE, IntlDateFormatter::SHORT, IntlDateFormatter::MEDIUM];
         foreach ($types as $datetype) {

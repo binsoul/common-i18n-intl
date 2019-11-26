@@ -25,11 +25,7 @@ class IntlNumberFormatter implements NumberFormatter
      */
     public function __construct(?Locale $locale = null)
     {
-        if (!$locale) {
-            $locale = DefaultLocale::fromString(\Locale::getDefault());
-        }
-
-        $this->locale = $locale;
+        $this->locale = $locale ?? DefaultLocale::fromString(\Locale::getDefault());
     }
 
     public function formatDecimal(float $value, int $decimals = null): string
