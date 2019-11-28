@@ -132,7 +132,7 @@ class IntlDateTimeFormatter implements DateTimeFormatter
         $types = [IntlDateFormatter::NONE, IntlDateFormatter::SHORT, IntlDateFormatter::MEDIUM];
         foreach ($types as $datetype) {
             foreach ($types as $timetype) {
-                $formatter = new IntlDateFormatter($locale->getCode(), $datetype, $timetype);
+                $formatter = new IntlDateFormatter($this->locale->getCode(), $datetype, $timetype);
                 $pattern = $formatter->getPattern();
                 $formatter->setPattern($this->expandNumbers($pattern));
 
