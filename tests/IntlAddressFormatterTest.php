@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class IntlAddressFormatterTest extends TestCase
 {
-    public function countriesAndNames():array
+    public function countriesAndNames(): array
     {
         return [
             ['DE', 'en', 'Germany'],
@@ -23,6 +23,7 @@ class IntlAddressFormatterTest extends TestCase
             ['FR', 'de', 'Frankreich'],
         ];
     }
+
     /**
      * @dataProvider countriesAndNames
      */
@@ -36,9 +37,6 @@ class IntlAddressFormatterTest extends TestCase
         $this->assertEquals($countryName, $lines[count($lines) - 1]);
     }
 
-    /**
-     * @return DefaultAddress
-     */
     private function buildAddress(string $countryCode): DefaultAddress
     {
         return new DefaultAddress(
