@@ -20,6 +20,6 @@ class IntlAddressFormatter extends DefaultAddressFormatter
 
     protected function isoCodeToName(string $isoCode): string
     {
-        return \Locale::getDisplayRegion('-'.$isoCode, $this->locale->getCode());
+        return \Locale::getDisplayRegion('-' . $isoCode, $this->locale->getCode());
     }
 }

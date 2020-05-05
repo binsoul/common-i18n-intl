@@ -23,6 +23,7 @@ class Calendar
      * @var IntlDateTimeFormatter
      */
     private $formatter;
+
     /**
      * @var PointFactory
      */
@@ -142,7 +143,8 @@ class Calendar
     {
         $day = new DateTime('next Monday');
         $result = [];
-        for ($i = 0; $i < 7; ++$i) {
+
+        for ($i = 0; $i < 7; $i++) {
             $result[] = $this->formatter->formatObject($day, 'cccc');
             $day->add(new DateInterval('P1D'));
         }

@@ -1,6 +1,8 @@
 <?php
 
-namespace BinSoul\Test\Common\I18n\DateTime;
+declare(strict_types=1);
+
+namespace BinSoul\Test\Common\I18n\Intl\DateTime;
 
 use BinSoul\Common\I18n\Intl\DateTime\PropertyBag;
 use PHPUnit\Framework\TestCase;
@@ -62,6 +64,7 @@ class PropertyBagTest extends TestCase
     public function test_returns_iterator($property): void
     {
         $bag = new PropertyBag(['prop1' => $property]);
+
         foreach ($bag as $key => $value) {
             $this->assertEquals('prop1', $key);
             $this->assertEquals($property, $value);

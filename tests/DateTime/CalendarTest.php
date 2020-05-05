@@ -1,6 +1,8 @@
 <?php
 
-namespace BinSoul\Test\Common\I18n\DateTime;
+declare(strict_types=1);
+
+namespace BinSoul\Test\Common\I18n\Intl\DateTime;
 
 use BinSoul\Common\I18n\DefaultLocale;
 use BinSoul\Common\I18n\Intl\DateTime\Calendar;
@@ -26,7 +28,7 @@ class CalendarTest extends TestCase
     {
         $calendar = new Calendar();
 
-        for ($i = 1; $i <= 12; ++$i) {
+        for ($i = 1; $i <= 12; $i++) {
             $month = $calendar->getMonth($i, 2019);
             $this->assertEquals($i, $month->getNumber());
             $this->assertEquals(2019, $month->getYear()->getNumber());
@@ -50,7 +52,7 @@ class CalendarTest extends TestCase
     {
         $calendar = new Calendar();
 
-        for ($i = 1; $i <= 52; ++$i) {
+        for ($i = 1; $i <= 52; $i++) {
             $week = $calendar->getWeek($i, 2019);
             $this->assertEquals($i, $week->getNumber());
             $this->assertEquals(2019, $week->getYear()->getNumber());
@@ -74,7 +76,7 @@ class CalendarTest extends TestCase
     {
         $calendar = new Calendar();
 
-        for ($i = 1; $i <= 31; ++$i) {
+        for ($i = 1; $i <= 31; $i++) {
             $day = $calendar->getDay($i, 1, 2019);
             $this->assertEquals($i, $day->getNumber());
             $this->assertEquals(1, $day->getMonth()->getNumber());

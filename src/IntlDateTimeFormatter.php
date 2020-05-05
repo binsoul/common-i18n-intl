@@ -17,20 +17,35 @@ use IntlDateFormatter;
 class IntlDateTimeFormatter implements DateTimeFormatter
 {
     public const ATOM = "yyyy-MM-dd'T'HH:mm:ssxxx";
+
     public const COOKIE = 'eeee, dd-MMM-yyyy HH:mm:ss zzz';
+
     public const ISO8601_FULL = "yyyy-MM-dd'T'HH:mm:ssxxx";
+
     public const ISO8601_DATE = 'yyyy-MM-dd';
+
     public const ISO8601_TIME = 'HH:mm:ss';
+
     public const ISO8601_DATETIME = "yyyy-MM-dd'T'HH:mm:ss";
+
     public const RFC822 = 'eee, dd MMM yy HH:mm:ss xx';
+
     public const RFC850 = 'eeee, dd-MMM-yy HH:mm:ss zzz';
+
     public const RFC1036 = 'eee, dd MMM yy HH:mm:ss xx';
+
     public const RFC1123 = 'eee, dd MMM yyyy HH:mm:ss xx';
+
     public const RFC2822 = 'eee, dd MMM yyyy HH:mm:ss xx';
+
     public const RFC3339 = "yyyy-MM-dd'T'HH:mm:ssxxx";
+
     public const RFC3339_EXTENDED = "yyyy-MM-dd'T'HH:mm:ss.SSSxxx";
+
     public const RFC7231 = "eee, dd MMM yyyy HH:mm:ss 'GMT'";
+
     public const RSS = 'eee, dd MMM yyyy HH:mm:ss xx';
+
     public const W3C = "yyyy-MM-dd'T'HH:mm:ssxxx";
 
     /**
@@ -130,6 +145,7 @@ class IntlDateTimeFormatter implements DateTimeFormatter
         $this->locale = $locale ?? DefaultLocale::fromString(\Locale::getDefault());
 
         $types = [IntlDateFormatter::NONE, IntlDateFormatter::SHORT, IntlDateFormatter::MEDIUM];
+
         foreach ($types as $datetype) {
             foreach ($types as $timetype) {
                 $formatter = new IntlDateFormatter($this->locale->getCode(), $datetype, $timetype);
@@ -192,12 +208,12 @@ class IntlDateTimeFormatter implements DateTimeFormatter
      * Formats an object.
      *
      * @param DateTimeInterface|IntlCalendar $object
-     * @param mixed                          $pattern
-     * @param string|null                    $locale
+     * @param string|int[]|int|null          $pattern
      */
-    public function formatObject($object, $pattern = null, $locale = null): string
+    public function formatObject($object, $pattern = null, ?string $locale = null): string
     {
         $format = $pattern;
+
         if (is_string($pattern)) {
             if ($object instanceof DateTimeInterface) {
                 $format = $this->injectTimeZone($object, $pattern);
@@ -219,18 +235,20 @@ class IntlDateTimeFormatter implements DateTimeFormatter
     public static function convertToIcu(string $pattern): string
     {
         $parts = preg_split('/(\\\\.)/', $pattern, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+
         if ($parts === false) {
             return $pattern;
         }
 
         $result = '';
         $isEscaped = false;
+
         foreach ($parts as $part) {
             if ($part[0] === '\\') {
                 if ($isEscaped) {
                     $result .= $part[1];
                 } else {
-                    $result .= "'".$part[1];
+                    $result .= "'" . $part[1];
                 }
 
                 $isEscaped = true;
@@ -257,8 +275,10 @@ class IntlDateTimeFormatter implements DateTimeFormatter
     private function expandNumbers(string $pattern): string
     {
         $result = $pattern;
+
         foreach (self::$expansionPatterns as $search => $replace) {
             $replaced = preg_replace($search, $replace, $result);
+
             if ($replaced !== null) {
                 $result = $replaced;
             }
@@ -273,8 +293,10 @@ class IntlDateTimeFormatter implements DateTimeFormatter
     private function injectTimeZone(DateTimeInterface $datetime, string $pattern): string
     {
         $result = $pattern;
+
         if (strpos($pattern, 'z') !== false) {
-            $result = preg_replace('/(?<!z)z{1,3}(?!z)/', "'".$datetime->format('T')."'", $pattern);
+            $result = preg_replace('/(?<!z)z{1,3}(?!z)/', "'" . $datetime->format('T') . "'", $pattern);
+
             if ($result === null) {
                 return $pattern;
             }

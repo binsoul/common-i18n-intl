@@ -66,7 +66,7 @@ class Day extends Point
     {
         $calendar = $this->prepareCalendar();
 
-        return !$calendar->isWeekend();
+        return ! $calendar->isWeekend();
     }
 
     /**
@@ -82,7 +82,7 @@ class Day extends Point
     /**
      * Returns true if the day the same a another day.
      */
-    public function isSameDay(Day $day): bool
+    public function isSameDay(self $day): bool
     {
         return $this->getNumber() === $day->getNumber() && $this->isSameMonth($day->getMonth());
     }
@@ -106,7 +106,7 @@ class Day extends Point
     /**
      * Returns the day after this day.
      */
-    public function getNextDay(): Day
+    public function getNextDay(): self
     {
         $calendar = $this->prepareCalendar();
         $calendar->add(IntlCalendar::FIELD_DATE, 1);
@@ -117,7 +117,7 @@ class Day extends Point
     /**
      * Returns the day before this day.
      */
-    public function getPreviousDay(): Day
+    public function getPreviousDay(): self
     {
         $calendar = $this->prepareCalendar();
         $calendar->add(IntlCalendar::FIELD_DATE, -1);
@@ -141,12 +141,13 @@ class Day extends Point
         $year = $this->getYear()->getNumber();
 
         $currentWeek = $calendar->get(IntlCalendar::FIELD_WEEK_OF_YEAR);
+
         if ($currentWeek > $lastWeekOfMonth && $this->month->getNumber() - 1 === $firstMonth) {
-            --$year;
+            $year--;
         }
 
         if ($previousWeek > $currentWeek) {
-            ++$year;
+            $year++;
         }
 
         return $this->factory->getWeek($calendar->get(IntlCalendar::FIELD_WEEK_OF_YEAR), $year);

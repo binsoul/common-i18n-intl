@@ -16,6 +16,7 @@ class PointFactory
      * @var IntlDateTimeFormatter
      */
     private $formatter;
+
     /**
      * @var IntlCalendar
      */
@@ -69,7 +70,7 @@ class PointFactory
      */
     public function getYear(int $year): Year
     {
-        if (!isset($this->years[$year])) {
+        if (! isset($this->years[$year])) {
             $this->years[$year] = new Year($year, $this, $this->formatter);
         }
 
@@ -85,8 +86,9 @@ class PointFactory
         $year = $this->internalCalendar->get(IntlCalendar::FIELD_YEAR);
         $month = $this->internalCalendar->get(IntlCalendar::FIELD_MONTH);
 
-        $index = $year.'-'.$month;
-        if (!isset($this->months[$index])) {
+        $index = $year . '-' . $month;
+
+        if (! isset($this->months[$index])) {
             $this->months[$index] = new Month($month, $this->getYear($year), $this, $this->formatter);
         }
 
@@ -103,16 +105,18 @@ class PointFactory
         $this->internalCalendar->set(IntlCalendar::FIELD_DOW_LOCAL, 1);
 
         $actualWeek = $this->internalCalendar->get(IntlCalendar::FIELD_WEEK_OF_YEAR);
+
         if ($actualWeek < $week) {
-            ++$year;
+            $year++;
             $week = $actualWeek;
         } elseif ($actualWeek > $week) {
-            --$year;
+            $year--;
             $week = $actualWeek;
         }
 
-        $index = $year.'-'.$week;
-        if (!isset($this->weeks[$index])) {
+        $index = $year . '-' . $week;
+
+        if (! isset($this->weeks[$index])) {
             $this->weeks[$index] = new Week($week, $this->getYear($year), $this, $this->formatter);
         }
 
@@ -129,8 +133,9 @@ class PointFactory
         $month = $this->internalCalendar->get(IntlCalendar::FIELD_MONTH);
         $day = $this->internalCalendar->get(IntlCalendar::FIELD_DATE);
 
-        $index = $year.'-'.$month.'-'.$day;
-        if (!isset($this->days[$index])) {
+        $index = $year . '-' . $month . '-' . $day;
+
+        if (! isset($this->days[$index])) {
             $this->days[$index] = new Day($day, $this->getMonth($month, $year), $this, $this->formatter);
         }
 

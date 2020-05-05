@@ -68,7 +68,7 @@ class Month extends Point
     /**
      * Returns the month after this month.
      */
-    public function getNextMonth(): Month
+    public function getNextMonth(): self
     {
         $calendar = $this->prepareCalendar();
         $calendar->add(IntlCalendar::FIELD_MONTH, 1);
@@ -79,7 +79,7 @@ class Month extends Point
     /**
      * Returns the month before this month.
      */
-    public function getPreviousMonth(): Month
+    public function getPreviousMonth(): self
     {
         $calendar = $this->prepareCalendar();
         $calendar->add(IntlCalendar::FIELD_MONTH, -1);
@@ -124,7 +124,7 @@ class Month extends Point
         $firstDay = $calendar->getActualMinimum(IntlCalendar::FIELD_DATE);
         $lastDay = $calendar->getActualMaximum(IntlCalendar::FIELD_DATE);
 
-        for ($day = $firstDay; $day <= $lastDay; ++$day) {
+        for ($day = $firstDay; $day <= $lastDay; $day++) {
             $result[] = $this->factory->getDay($day, $this->number, $this->year->getNumber());
         }
 
@@ -150,15 +150,17 @@ class Month extends Point
         $previousWeek = -1;
 
         $result = [];
+
         while (true) {
             if ($this->isEndOfWeek($calendar)) {
                 $currentWeek = $calendar->get(IntlCalendar::FIELD_WEEK_OF_YEAR);
+
                 if ($this->number === $firstMonth && $currentWeek > $lastWeek) {
-                    --$year;
+                    $year--;
                 }
 
                 if ($previousWeek > $currentWeek) {
-                    ++$year;
+                    $year++;
                 }
 
                 $previousWeek = $currentWeek;
@@ -199,6 +201,6 @@ class Month extends Point
      */
     private function isEndOfWeek(IntlCalendar $c): bool
     {
-        return 7 === $c->get(IntlCalendar::FIELD_DOW_LOCAL);
+        return $c->get(IntlCalendar::FIELD_DOW_LOCAL) === 7;
     }
 }

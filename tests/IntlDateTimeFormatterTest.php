@@ -1,6 +1,8 @@
 <?php
 
-namespace BinSoul\Test\Common\I18n;
+declare(strict_types=1);
+
+namespace BinSoul\Test\Common\I18n\Intl;
 
 use BinSoul\Common\I18n\DefaultLocale;
 use BinSoul\Common\I18n\Intl\IntlDateTimeFormatter;
@@ -86,7 +88,7 @@ class IntlDateTimeFormatterTest extends TestCase
     /**
      * @dataProvider dateTimes
      */
-    public function test_formats_dateTimes(string $locale, string $expected): void
+    public function test_formats_date_times(string $locale, string $expected): void
     {
         $formatter = new IntlDateTimeFormatter(DefaultLocale::fromString($locale));
         $this->assertEquals($expected, $formatter->formatDateTime(new DateTime('2019-02-01T14:07:09')));
@@ -105,7 +107,7 @@ class IntlDateTimeFormatterTest extends TestCase
     /**
      * @dataProvider dateTimesWithSeconds
      */
-    public function test_formats_dateTimes_with_seconds(string $locale, string $expected): void
+    public function test_formats_date_times_with_seconds(string $locale, string $expected): void
     {
         $formatter = new IntlDateTimeFormatter(DefaultLocale::fromString($locale));
         $this->assertEquals($expected, $formatter->formatDateTimeWithSeconds(new DateTime('2019-02-01T14:07:09')));

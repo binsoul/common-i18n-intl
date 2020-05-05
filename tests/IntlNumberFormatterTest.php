@@ -1,6 +1,8 @@
 <?php
 
-namespace BinSoul\Test\Common\I18n;
+declare(strict_types=1);
+
+namespace BinSoul\Test\Common\I18n\Intl;
 
 use BinSoul\Common\I18n\DefaultLocale;
 use BinSoul\Common\I18n\Intl\IntlNumberFormatter;

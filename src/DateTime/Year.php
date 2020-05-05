@@ -56,7 +56,8 @@ class Year extends Point
         $result = [];
         $firstMonth = $calendar->getActualMinimum(IntlCalendar::FIELD_MONTH);
         $lastMonth = $calendar->getActualMaximum(IntlCalendar::FIELD_MONTH);
-        for ($month = $firstMonth; $month <= $lastMonth; ++$month) {
+
+        for ($month = $firstMonth; $month <= $lastMonth; $month++) {
             $result[] = $this->factory->getMonth($month, $this->number);
         }
 
@@ -76,7 +77,8 @@ class Year extends Point
         $result = [];
         $firstWeek = $calendar->getActualMinimum(IntlCalendar::FIELD_WEEK_OF_YEAR);
         $lastWeek = $calendar->getActualMaximum(IntlCalendar::FIELD_WEEK_OF_YEAR);
-        for ($week = $firstWeek; $week <= $lastWeek; ++$week) {
+
+        for ($week = $firstWeek; $week <= $lastWeek; $week++) {
             $result[] = $this->factory->getWeek($week, $this->number);
         }
 
@@ -91,6 +93,7 @@ class Year extends Point
     public function getDays(): array
     {
         $result = [];
+
         foreach ($this->getMonths() as $month) {
             foreach ($month->getDays() as $day) {
                 $result[] = $day;

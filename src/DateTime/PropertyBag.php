@@ -54,7 +54,7 @@ class PropertyBag implements IteratorAggregate, Countable, ArrayAccess
      *
      * @param array<string, mixed> $properties
      */
-    public function replace(array $properties = [])
+    public function replace(array $properties = []): void
     {
         $this->properties = $properties;
     }
@@ -64,9 +64,10 @@ class PropertyBag implements IteratorAggregate, Countable, ArrayAccess
      *
      * @param array<string, mixed> $properties
      */
-    public function add(array $properties = [])
+    public function add(array $properties = []): void
     {
         $properties = array_replace($this->properties, $properties);
+
         if ($properties !== null) {
             $this->properties = $properties;
         }
@@ -78,7 +79,7 @@ class PropertyBag implements IteratorAggregate, Countable, ArrayAccess
      * @param string $key     The key
      * @param mixed  $default The default value if the property key does not exist
      *
-     * @return mixed
+     * @return mixed|null
      */
     public function get(string $key, $default = null)
     {
@@ -109,13 +110,15 @@ class PropertyBag implements IteratorAggregate, Countable, ArrayAccess
     /**
      * Removes a property.
      */
-    public function remove(string $key)
+    public function remove(string $key): void
     {
         unset($this->properties[$key]);
     }
 
     /**
      * Returns an iterator for properties.
+     *
+     * @return ArrayIterator<string, mixed>
      */
     public function getIterator(): ArrayIterator
     {
@@ -131,15 +134,17 @@ class PropertyBag implements IteratorAggregate, Countable, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * @param string|mixed $offset
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->has($offset);
     }
 
     /**
-     * {@inheritdoc}
+     * @param string|mixed $offset
+     *
+     * @return mixed|null
      */
     public function offsetGet($offset)
     {
@@ -147,17 +152,18 @@ class PropertyBag implements IteratorAggregate, Countable, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * @param string|mixed $offset
+     * @param mixed|null   $value
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->set($offset, $value);
     }
 
     /**
-     * {@inheritdoc}
+     * @param string|mixed $offset
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $this->remove($offset);
     }

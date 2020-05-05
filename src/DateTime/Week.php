@@ -37,6 +37,7 @@ class Week extends Point
     public function getDateLong(): string
     {
         $calendar = $this->prepareCalendar();
+
         if ($calendar->get(IntlCalendar::FIELD_YEAR) !== $this->year->getNumber()) {
             $calendar->set(IntlCalendar::FIELD_YEAR, $this->year->getNumber());
         }
@@ -69,7 +70,8 @@ class Week extends Point
         $calendar = $this->prepareCalendar();
 
         $result = [];
-        while (!$this->isEndOfWeek($calendar)) {
+
+        while (! $this->isEndOfWeek($calendar)) {
             $result[] = $this->factory->getDay($calendar->get(IntlCalendar::FIELD_DATE), $calendar->get(IntlCalendar::FIELD_MONTH), $calendar->get(IntlCalendar::FIELD_YEAR));
 
             $calendar->add(IntlCalendar::FIELD_DATE, 1);
@@ -83,12 +85,13 @@ class Week extends Point
     /**
      * Returns the week after this week.
      */
-    public function getNextWeek(): Week
+    public function getNextWeek(): self
     {
         $calendar = $this->prepareCalendar();
         $calendar->add(IntlCalendar::FIELD_WEEK_OF_YEAR, 1);
 
         $nextWeek = $calendar->get(IntlCalendar::FIELD_WEEK_OF_YEAR);
+
         if ($nextWeek < $this->number) {
             return $this->factory->getWeek($nextWeek, $this->year->getNumber() + 1);
         }
@@ -99,12 +102,13 @@ class Week extends Point
     /**
      * Returns the week before this week.
      */
-    public function getPreviousWeek(): Week
+    public function getPreviousWeek(): self
     {
         $calendar = $this->prepareCalendar();
         $calendar->add(IntlCalendar::FIELD_WEEK_OF_YEAR, -1);
 
         $nextWeek = $calendar->get(IntlCalendar::FIELD_WEEK_OF_YEAR);
+
         if ($nextWeek > $this->number) {
             return $this->factory->getWeek($nextWeek, $this->year->getNumber() - 1);
         }
@@ -128,7 +132,8 @@ class Week extends Point
     public function getLastDay(): Day
     {
         $calendar = $this->prepareCalendar();
-        while (!$this->isEndOfWeek($calendar)) {
+
+        while (! $this->isEndOfWeek($calendar)) {
             $calendar->add(IntlCalendar::FIELD_DATE, 1);
         }
 
@@ -159,6 +164,6 @@ class Week extends Point
      */
     private function isEndOfWeek(IntlCalendar $c): bool
     {
-        return 7 === $c->get(IntlCalendar::FIELD_DOW_LOCAL);
+        return $c->get(IntlCalendar::FIELD_DOW_LOCAL) === 7;
     }
 }

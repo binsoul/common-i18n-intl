@@ -17,14 +17,17 @@ abstract class Point
      * @var int
      */
     protected $number;
+
     /**
      * @var PointFactory
      */
     protected $factory;
+
     /**
      * @var IntlDateTimeFormatter
      */
     protected $formatter;
+
     /**
      * @var PropertyBag
      */

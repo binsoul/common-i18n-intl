@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BinSoul\Common\I18n\Intl;
 
 use BinSoul\Common\I18n\DefaultLocale;
@@ -11,13 +13,24 @@ use BinSoul\Common\I18n\NumberFormatter;
  */
 class IntlNumberFormatter implements NumberFormatter
 {
-    /** @var Locale */
+    /**
+     * @var Locale
+     */
     private $locale;
-    /** @var \NumberFormatter */
+
+    /**
+     * @var \NumberFormatter
+     */
     private $decimalFormatter;
-    /** @var \NumberFormatter */
+
+    /**
+     * @var \NumberFormatter
+     */
     private $percentFormatter;
-    /** @var \NumberFormatter */
+
+    /**
+     * @var \NumberFormatter
+     */
     private $currencyFormatter;
 
     /**
@@ -28,9 +41,10 @@ class IntlNumberFormatter implements NumberFormatter
         $this->locale = $locale ?? DefaultLocale::fromString(\Locale::getDefault());
     }
 
-    public function formatDecimal(float $value, int $decimals = null): string
+    public function formatDecimal(float $value, ?int $decimals = null): string
     {
         $formatter = $this->getDecimalFormatter();
+
         if ($decimals !== null) {
             $formatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $decimals);
         } else {
@@ -40,9 +54,10 @@ class IntlNumberFormatter implements NumberFormatter
         return $formatter->format($value);
     }
 
-    public function formatPercent(float $value, int $decimals = null): string
+    public function formatPercent(float $value, ?int $decimals = null): string
     {
         $formatter = $this->getPercentFormatter();
+
         if ($decimals !== null) {
             $formatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $decimals);
         } else {
@@ -55,6 +70,7 @@ class IntlNumberFormatter implements NumberFormatter
     public function formatCurrency(float $value, string $currencyCode = ''): string
     {
         $formatter = $this->getCurrencyFormatter();
+
         if ($currencyCode === '') {
             return $this->formatDecimal($value, $formatter->getAttribute(\NumberFormatter::FRACTION_DIGITS));
         }
@@ -76,7 +92,7 @@ class IntlNumberFormatter implements NumberFormatter
      */
     private function getDecimalFormatter(): \NumberFormatter
     {
-        if (!is_object($this->decimalFormatter)) {
+        if (! is_object($this->decimalFormatter)) {
             $this->decimalFormatter = new \NumberFormatter($this->locale->getCode('_'), \NumberFormatter::DECIMAL);
         }
 
@@ -88,7 +104,7 @@ class IntlNumberFormatter implements NumberFormatter
      */
     private function getPercentFormatter(): \NumberFormatter
     {
-        if (!is_object($this->percentFormatter)) {
+        if (! is_object($this->percentFormatter)) {
             $this->percentFormatter = new \NumberFormatter($this->locale->getCode('_'), \NumberFormatter::PERCENT);
         }
 
@@ -100,7 +116,7 @@ class IntlNumberFormatter implements NumberFormatter
      */
     private function getCurrencyFormatter(): \NumberFormatter
     {
-        if (!is_object($this->currencyFormatter)) {
+        if (! is_object($this->currencyFormatter)) {
             $this->currencyFormatter = new \NumberFormatter($this->locale->getCode('_'), \NumberFormatter::CURRENCY);
         }
 
