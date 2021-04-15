@@ -13,6 +13,7 @@ use DateInterval;
 use DateTime;
 use DateTimeInterface;
 use IntlCalendar;
+use IntlTimeZone;
 
 /**
  * Represents a calendar for a time zone and a locale.
@@ -39,7 +40,7 @@ class Calendar
         }
 
         if ($timeZone === null) {
-            $timeZone = new DefaultTimeZone(\IntlTimeZone::createDefault()->toDateTimeZone()->getName());
+            $timeZone = new DefaultTimeZone(IntlTimeZone::createDefault()->toDateTimeZone()->getName());
         }
 
         $this->formatter = new IntlDateTimeFormatter($locale);

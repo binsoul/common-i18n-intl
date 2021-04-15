@@ -6,6 +6,7 @@ namespace BinSoul\Common\I18n\Intl\DateTime;
 
 use BinSoul\Common\I18n\Intl\IntlDateTimeFormatter;
 use IntlCalendar;
+use Locale;
 
 /**
  * Generates points in time.
@@ -54,7 +55,7 @@ class PointFactory
     {
         $this->formatter = $formatter;
         $this->calendar = $calendar;
-        $this->internalCalendar = \IntlCalendar::createInstance($calendar->getTimeZone(), $calendar->getLocale(\Locale::VALID_LOCALE));
+        $this->internalCalendar = IntlCalendar::createInstance($calendar->getTimeZone(), $calendar->getLocale(Locale::VALID_LOCALE));
     }
 
     /**

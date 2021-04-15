@@ -16,15 +16,15 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.3 || ^8.0",
         "ext-intl": "*",
         "binsoul/common-i18n": "*@dev"
     },
     "require-dev": {
-        "binsoul/coding-standard": "*@dev",
+        "binsoul/coding-standard": "^1",
         "phpstan/phpstan": "^0.12",
         "phpunit/phpunit": "^8",
-        "symplify/easy-coding-standard-prefixed": "^7"
+        "symplify/easy-coding-standard-prefixed": "^9"
     },
     "autoload": {
         "psr-4": {
@@ -38,7 +38,7 @@
     },
     "scripts": {
         "test": "phpunit",
-        "fix-style": "ecs check src tests --config vendor/binsoul/coding-standard/easy-coding-standard.yaml --fix",
+        "fix-style": "ecs check src tests --config vendor/binsoul/coding-standard/easy-coding-standard.php --fix",
         "analyze": "phpstan analyse -l max src"
     },
     "extra": {
