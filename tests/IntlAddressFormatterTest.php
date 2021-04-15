@@ -36,7 +36,7 @@ class IntlAddressFormatterTest extends TestCase
 
         $formattedAddress = $formatter->format($address);
         $lines = explode("\n", $formattedAddress);
-        $this->assertEquals($countryName, $lines[count($lines) - 1]);
+        self::assertEquals($countryName, $lines[count($lines) - 1]);
     }
 
     private function buildAddress(string $countryCode): DefaultAddress

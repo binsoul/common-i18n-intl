@@ -17,9 +17,9 @@ class YearTest extends TestCase
 
         $year = $calendar->getYear(2019);
         $day = $year->getFirstDay();
-        $this->assertEquals(1, $day->getNumber());
-        $this->assertEquals(1, $day->getMonth()->getNumber());
-        $this->assertEquals(2019, $day->getYear()->getNumber());
+        self::assertEquals(1, $day->getNumber());
+        self::assertEquals(1, $day->getMonth()->getNumber());
+        self::assertEquals(2019, $day->getYear()->getNumber());
     }
 
     public function test_returns_last_day(): void
@@ -28,9 +28,9 @@ class YearTest extends TestCase
 
         $year = $calendar->getYear(2019);
         $day = $year->getLastDay();
-        $this->assertEquals(31, $day->getNumber());
-        $this->assertEquals(12, $day->getMonth()->getNumber());
-        $this->assertEquals(2019, $day->getYear()->getNumber());
+        self::assertEquals(31, $day->getNumber());
+        self::assertEquals(12, $day->getMonth()->getNumber());
+        self::assertEquals(2019, $day->getYear()->getNumber());
     }
 
     public function test_returns_days(): void
@@ -39,17 +39,17 @@ class YearTest extends TestCase
 
         $year = $calendar->getYear(2019);
         $days = $year->getDays();
-        $this->assertCount(365, $days);
+        self::assertCount(365, $days);
 
         $day = $days[0];
-        $this->assertEquals(1, $day->getNumber());
-        $this->assertEquals(1, $day->getMonth()->getNumber());
-        $this->assertEquals(2019, $day->getYear()->getNumber());
+        self::assertEquals(1, $day->getNumber());
+        self::assertEquals(1, $day->getMonth()->getNumber());
+        self::assertEquals(2019, $day->getYear()->getNumber());
 
         $day = $days[364];
-        $this->assertEquals(31, $day->getNumber());
-        $this->assertEquals(12, $day->getMonth()->getNumber());
-        $this->assertEquals(2019, $day->getYear()->getNumber());
+        self::assertEquals(31, $day->getNumber());
+        self::assertEquals(12, $day->getMonth()->getNumber());
+        self::assertEquals(2019, $day->getYear()->getNumber());
     }
 
     public function test_returns_first_month(): void
@@ -58,8 +58,8 @@ class YearTest extends TestCase
 
         $year = $calendar->getYear(2019);
         $month = $year->getFirstMonth();
-        $this->assertEquals(1, $month->getNumber());
-        $this->assertEquals(2019, $month->getYear()->getNumber());
+        self::assertEquals(1, $month->getNumber());
+        self::assertEquals(2019, $month->getYear()->getNumber());
     }
 
     public function test_returns_last_month(): void
@@ -68,8 +68,8 @@ class YearTest extends TestCase
 
         $year = $calendar->getYear(2019);
         $month = $year->getLastMonth();
-        $this->assertEquals(12, $month->getNumber());
-        $this->assertEquals(2019, $month->getYear()->getNumber());
+        self::assertEquals(12, $month->getNumber());
+        self::assertEquals(2019, $month->getYear()->getNumber());
     }
 
     public function test_returns_months(): void
@@ -78,15 +78,15 @@ class YearTest extends TestCase
 
         $year = $calendar->getYear(2019);
         $months = $year->getMonths();
-        $this->assertCount(12, $months);
+        self::assertCount(12, $months);
 
         $month = $months[0];
-        $this->assertEquals(1, $month->getNumber());
-        $this->assertEquals(2019, $month->getYear()->getNumber());
+        self::assertEquals(1, $month->getNumber());
+        self::assertEquals(2019, $month->getYear()->getNumber());
 
         $month = $months[11];
-        $this->assertEquals(12, $month->getNumber());
-        $this->assertEquals(2019, $month->getYear()->getNumber());
+        self::assertEquals(12, $month->getNumber());
+        self::assertEquals(2019, $month->getYear()->getNumber());
     }
 
     public function test_returns_first_week(): void
@@ -95,8 +95,8 @@ class YearTest extends TestCase
 
         $year = $calendar->getYear(2019);
         $week = $year->getFirstWeek();
-        $this->assertEquals(1, $week->getNumber());
-        $this->assertEquals(2019, $week->getYear()->getNumber());
+        self::assertEquals(1, $week->getNumber());
+        self::assertEquals(2019, $week->getYear()->getNumber());
     }
 
     public function test_returns_last_week(): void
@@ -105,8 +105,8 @@ class YearTest extends TestCase
 
         $year = $calendar->getYear(2019);
         $week = $year->getLastWeek();
-        $this->assertEquals(52, $week->getNumber());
-        $this->assertEquals(2019, $week->getYear()->getNumber());
+        self::assertEquals(52, $week->getNumber());
+        self::assertEquals(2019, $week->getYear()->getNumber());
     }
 
     public function test_returns_weeks(): void
@@ -115,15 +115,15 @@ class YearTest extends TestCase
 
         $year = $calendar->getYear(2019);
         $weeks = $year->getWeeks();
-        $this->assertCount(52, $weeks);
+        self::assertCount(52, $weeks);
 
         $week = $weeks[0];
-        $this->assertEquals(1, $week->getNumber());
-        $this->assertEquals(2019, $week->getYear()->getNumber());
+        self::assertEquals(1, $week->getNumber());
+        self::assertEquals(2019, $week->getYear()->getNumber());
 
         $week = $weeks[51];
-        $this->assertEquals(52, $week->getNumber());
-        $this->assertEquals(2019, $week->getYear()->getNumber());
+        self::assertEquals(52, $week->getNumber());
+        self::assertEquals(2019, $week->getYear()->getNumber());
     }
 
     public function test_formats_dates(): void
@@ -131,18 +131,18 @@ class YearTest extends TestCase
         $calendar = new Calendar(new DefaultLocale('de-DE'));
         $year = $calendar->getYear(2019);
 
-        $this->assertEquals('19', $year->getDateShort());
-        $this->assertEquals('2019', $year->getDateMedium());
-        $this->assertEquals('2019', $year->getDateLong());
-        $this->assertEquals('2019', $year->getDateIso());
+        self::assertEquals('19', $year->getDateShort());
+        self::assertEquals('2019', $year->getDateMedium());
+        self::assertEquals('2019', $year->getDateLong());
+        self::assertEquals('2019', $year->getDateIso());
 
         $calendar = new Calendar(new DefaultLocale('ar-EG'));
         $year = $calendar->getYear(2019);
 
-        $this->assertEquals('١٩', $year->getDateShort());
-        $this->assertEquals('٢٠١٩', $year->getDateMedium());
-        $this->assertEquals('٢٠١٩', $year->getDateLong());
-        $this->assertEquals('2019', $year->getDateIso());
+        self::assertEquals('١٩', $year->getDateShort());
+        self::assertEquals('٢٠١٩', $year->getDateMedium());
+        self::assertEquals('٢٠١٩', $year->getDateLong());
+        self::assertEquals('2019', $year->getDateIso());
     }
 
     public function test_formats_names(): void
@@ -151,16 +151,16 @@ class YearTest extends TestCase
 
         $year = $calendar->getYear(2019);
 
-        $this->assertEquals('19', $year->getNameShort());
-        $this->assertEquals('2019', $year->getNameMedium());
-        $this->assertEquals('2019', $year->getNameLong());
+        self::assertEquals('19', $year->getNameShort());
+        self::assertEquals('2019', $year->getNameMedium());
+        self::assertEquals('2019', $year->getNameLong());
 
         $calendar = new Calendar(new DefaultLocale('ar-EG'));
         $year = $calendar->getYear(2019);
 
-        $this->assertEquals('١٩', $year->getNameShort());
-        $this->assertEquals('٢٠١٩', $year->getNameMedium());
-        $this->assertEquals('٢٠١٩', $year->getNameLong());
+        self::assertEquals('١٩', $year->getNameShort());
+        self::assertEquals('٢٠١٩', $year->getNameMedium());
+        self::assertEquals('٢٠١٩', $year->getNameLong());
     }
 
     public function test_has_properties(): void
@@ -168,6 +168,6 @@ class YearTest extends TestCase
         $calendar = new Calendar(new DefaultLocale('de-DE'));
         $day = $calendar->getYear(2019);
 
-        $this->assertInstanceOf(PropertyBag::class, $day->getProperties());
+        self::assertInstanceOf(PropertyBag::class, $day->getProperties());
     }
 }
