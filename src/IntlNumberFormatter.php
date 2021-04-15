@@ -78,6 +78,20 @@ class IntlNumberFormatter implements NumberFormatter
         return $formatter->formatCurrency($value, $currencyCode);
     }
 
+    public function getPercentSymbol(): string
+    {
+        $formatter = $this->getPercentFormatter();
+
+        return $formatter->getSymbol(\NumberFormatter::PERCENT_SYMBOL);
+    }
+
+    public function getCurrencySymbol(string $currencyCode): string
+    {
+        $formatter = new \NumberFormatter($this->locale->getCode('_') . '@currency=' . $currencyCode, \NumberFormatter::CURRENCY);
+
+        return $formatter->getSymbol(\NumberFormatter::CURRENCY_SYMBOL);
+    }
+
     public function withLocale(Locale $locale): NumberFormatter
     {
         if ($locale->getCode() === $this->locale->getCode()) {
