@@ -230,6 +230,46 @@ class IntlDateTimeFormatter implements DateTimeFormatter
     }
 
     /**
+     * Returns the pattern used to format times.
+     */
+    public function getTimePattern(): string
+    {
+        return $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::SHORT]->getPattern();
+    }
+
+    /**
+     * Returns the pattern used to format times including seconds.
+     */
+    public function getTimeWithSecondsPattern(): string
+    {
+        return $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::MEDIUM]->getPattern();
+    }
+
+    /**
+     * Returns the pattern used to format dates.
+     */
+    public function getDatePattern(): string
+    {
+        return $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::NONE]->getPattern();
+    }
+
+    /**
+     * Returns the pattern used to format datetimes.
+     */
+    public function getDateTimePattern(): string
+    {
+        return $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::SHORT]->getPattern();
+    }
+
+    /**
+     * Returns the pattern used to format datetimes including seconds.
+     */
+    public function getDateTimeWithSecondsPattern(): string
+    {
+        return $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::MEDIUM]->getPattern();
+    }
+
+    /**
      * Converts the given PHP date pattern to an ICU pattern.
      */
     public static function convertToIcu(string $pattern): string
