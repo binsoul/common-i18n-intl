@@ -167,31 +167,43 @@ class IntlDateTimeFormatter implements DateTimeFormatter
             return $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::NONE]::formatObject($datetime, $format, 'en');
         }
 
+        $formatter->setTimeZone($datetime->getTimezone());
+
         return $formatter->format($datetime);
     }
 
     public function formatTime(DateTimeInterface $time): string
     {
+        $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::SHORT]->setTimeZone($time->getTimezone());
+
         return $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::SHORT]->format($time);
     }
 
     public function formatTimeWithSeconds(DateTimeInterface $time): string
     {
+        $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::MEDIUM]->setTimeZone($time->getTimezone());
+
         return $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::MEDIUM]->format($time);
     }
 
     public function formatDate(DateTimeInterface $date): string
     {
+        $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::NONE]->setTimeZone($date->getTimezone());
+
         return $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::NONE]->format($date);
     }
 
     public function formatDateTime(DateTimeInterface $datetime): string
     {
+        $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::SHORT]->setTimeZone($datetime->getTimezone());
+
         return $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::SHORT]->format($datetime);
     }
 
     public function formatDateTimeWithSeconds(DateTimeInterface $datetime): string
     {
+        $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::MEDIUM]->setTimeZone($datetime->getTimezone());
+
         return $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::MEDIUM]->format($datetime);
     }
 
