@@ -132,6 +132,7 @@ class Day extends Point
     {
         $calendar = $this->prepareCalendar();
         $calendar->add(IntlCalendar::FIELD_DATE, -7);
+        $previousYear = $calendar->get(IntlCalendar::FIELD_YEAR);
         $previousWeek = $calendar->get(IntlCalendar::FIELD_WEEK_OF_YEAR);
 
         $calendar = $this->prepareCalendar();
@@ -140,13 +141,14 @@ class Day extends Point
 
         $year = $this->getYear()->getNumber();
 
+        $currentYear = $calendar->get(IntlCalendar::FIELD_YEAR);
         $currentWeek = $calendar->get(IntlCalendar::FIELD_WEEK_OF_YEAR);
 
         if ($currentWeek > $lastWeekOfMonth && $this->month->getNumber() - 1 === $firstMonth) {
             $year--;
         }
 
-        if ($previousWeek > $currentWeek) {
+        if ($previousWeek > $currentWeek && $previousYear === $currentYear) {
             $year++;
         }
 

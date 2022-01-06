@@ -59,6 +59,14 @@ class DayTest extends TestCase
 
         self::assertEquals(53, $day->getWeek()->getNumber());
         self::assertEquals(2020, $day->getWeek()->getYear()->getNumber());
+
+        $day = $calendar->getDay(1, 1, 2022);
+        self::assertEquals(52, $day->getWeek()->getNumber());
+        self::assertEquals(2021, $day->getWeek()->getYear()->getNumber());
+
+        $day = $calendar->getDay(3, 1, 2022);
+        self::assertEquals(1, $day->getWeek()->getNumber());
+        self::assertEquals(2022, $day->getWeek()->getYear()->getNumber());
     }
 
     public function test_returns_next_day(): void
