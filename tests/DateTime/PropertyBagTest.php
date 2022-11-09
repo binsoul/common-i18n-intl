@@ -24,7 +24,6 @@ class PropertyBagTest extends TestCase
     }
 
     /**
-     * @param $property
      * @dataProvider properties
      */
     public function test_get_and_set($property): void
@@ -43,7 +42,6 @@ class PropertyBagTest extends TestCase
     }
 
     /**
-     * @param $property
      * @dataProvider properties
      */
     public function test_array_access($property): void
@@ -59,7 +57,6 @@ class PropertyBagTest extends TestCase
     }
 
     /**
-     * @param $property
      * @dataProvider properties
      */
     public function test_returns_iterator($property): void
