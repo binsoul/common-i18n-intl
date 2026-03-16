@@ -16,9 +16,9 @@
         }
     ],
     "require": {
-        "php": "^7.3 || ^8.0",
+        "php": ">=8.3",
         "ext-intl": "*",
-        "binsoul/common-i18n": "*@dev"
+        "binsoul/common-i18n": "dev-master"
     },
     "require-dev": {
         "binsoul/coding-standard": "^1",
