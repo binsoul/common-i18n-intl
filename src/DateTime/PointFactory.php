@@ -13,49 +13,36 @@ use Locale;
  */
 class PointFactory
 {
-    /**
-     * @var IntlDateTimeFormatter
-     */
-    private $formatter;
-
-    /**
-     * @var IntlCalendar
-     */
-    private $calendar;
-
-    /**
-     * @var IntlCalendar
-     */
-    private $internalCalendar;
+    private IntlCalendar $internalCalendar;
 
     /**
      * @var Year[]
      */
-    private $years = [];
+    private array $years = [];
 
     /**
      * @var Month[]
      */
-    private $months = [];
+    private array $months = [];
 
     /**
      * @var Week[]
      */
-    private $weeks = [];
+    private array $weeks = [];
 
     /**
      * @var Day[]
      */
-    private $days = [];
+    private array $days = [];
 
     /**
      * Constructs an instance of this class.
      */
-    public function __construct(IntlCalendar $calendar, IntlDateTimeFormatter $formatter)
-    {
-        $this->formatter = $formatter;
-        $this->calendar = $calendar;
-        $this->internalCalendar = IntlCalendar::createInstance($calendar->getTimeZone(), $calendar->getLocale(Locale::VALID_LOCALE));
+    public function __construct(
+        private readonly IntlCalendar $calendar,
+        private readonly IntlDateTimeFormatter $formatter
+    ) {
+        $this->internalCalendar = IntlCalendar::createInstance($this->calendar->getTimeZone(), $this->calendar->getLocale(Locale::VALID_LOCALE));
     }
 
     /**

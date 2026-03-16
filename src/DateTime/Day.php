@@ -10,18 +10,15 @@ use IntlCalendar;
 class Day extends Point
 {
     /**
-     * @var Month
-     */
-    private $month;
-
-    /**
      * Constructs an instance of this class.
      */
-    public function __construct(int $number, Month $month, PointFactory $periodFactory, IntlDateTimeFormatter $formatter)
-    {
+    public function __construct(
+        int $number,
+        private readonly Month $month,
+        PointFactory $periodFactory,
+        IntlDateTimeFormatter $formatter
+    ) {
         parent::__construct($number, $periodFactory, $formatter);
-
-        $this->month = $month;
     }
 
     public function getDateShort(): string
@@ -74,9 +71,7 @@ class Day extends Point
      */
     public function isWeekend(): bool
     {
-        $calendar = $this->prepareCalendar();
-
-        return $calendar->isWeekend();
+        return $this->prepareCalendar()->isWeekend();
     }
 
     /**
@@ -132,6 +127,7 @@ class Day extends Point
     {
         $calendar = $this->prepareCalendar();
         $calendar->add(IntlCalendar::FIELD_DATE, -7);
+
         $previousYear = $calendar->get(IntlCalendar::FIELD_YEAR);
         $previousWeek = $calendar->get(IntlCalendar::FIELD_WEEK_OF_YEAR);
 

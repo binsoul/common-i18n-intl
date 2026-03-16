@@ -13,25 +13,13 @@ use BinSoul\Common\I18n\NumberFormatter;
  */
 class IntlNumberFormatter implements NumberFormatter
 {
-    /**
-     * @var Locale
-     */
-    private $locale;
+    private readonly Locale $locale;
 
-    /**
-     * @var \NumberFormatter
-     */
-    private $decimalFormatter;
+    private ?\NumberFormatter $decimalFormatter = null;
 
-    /**
-     * @var \NumberFormatter
-     */
-    private $percentFormatter;
+    private ?\NumberFormatter $percentFormatter = null;
 
-    /**
-     * @var \NumberFormatter
-     */
-    private $currencyFormatter;
+    private ?\NumberFormatter $currencyFormatter = null;
 
     /**
      * Constructs an instance of this class.
@@ -51,7 +39,9 @@ class IntlNumberFormatter implements NumberFormatter
             $formatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 100);
         }
 
-        return $formatter->format($value);
+        $result = $formatter->format($value);
+
+        return $result !== false ? $result : '';
     }
 
     public function formatPercent(float $value, ?int $decimals = null): string
@@ -64,7 +54,9 @@ class IntlNumberFormatter implements NumberFormatter
             $formatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 100);
         }
 
-        return $formatter->format($value / 100);
+        $result = $formatter->format($value / 100);
+
+        return $result !== false ? $result : '';
     }
 
     public function formatCurrency(float $value, string $currencyCode = ''): string
@@ -75,14 +67,14 @@ class IntlNumberFormatter implements NumberFormatter
             return $this->formatDecimal($value, $formatter->getAttribute(\NumberFormatter::FRACTION_DIGITS));
         }
 
-        return $formatter->formatCurrency($value, $currencyCode);
+        $result = $formatter->formatCurrency($value, $currencyCode);
+
+        return $result !== false ? $result : '';
     }
 
     public function getPercentSymbol(): string
     {
-        $formatter = $this->getPercentFormatter();
-
-        return $formatter->getSymbol(\NumberFormatter::PERCENT_SYMBOL);
+        return $this->getPercentFormatter()->getSymbol(\NumberFormatter::PERCENT_SYMBOL);
     }
 
     public function getCurrencySymbol(string $currencyCode): string

@@ -11,28 +11,26 @@ use IteratorAggregate;
 
 /**
  * PropertyBag is a container for key/value pairs.
+ *
+ * @implements IteratorAggregate<string, mixed>
+ * @implements ArrayAccess<string, mixed>
  */
 class PropertyBag implements IteratorAggregate, Countable, ArrayAccess
 {
     /**
-     * @var array<string, mixed>
-     */
-    private $properties;
-
-    /**
      * Constructs an instance of this class.
      *
-     * @param mixed[] $properties
+     * @param array<string, mixed> $properties
      */
-    public function __construct(array $properties = [])
-    {
-        $this->properties = $properties;
+    public function __construct(
+        private array $properties = []
+    ) {
     }
 
     /**
      * Returns the properties.
      *
-     * @return mixed[]
+     * @return array<string, mixed>
      */
     public function all(): array
     {
@@ -42,7 +40,7 @@ class PropertyBag implements IteratorAggregate, Countable, ArrayAccess
     /**
      * Returns the property keys.
      *
-     * @return string[]
+     * @return array<int, string>
      */
     public function keys(): array
     {
@@ -68,9 +66,7 @@ class PropertyBag implements IteratorAggregate, Countable, ArrayAccess
     {
         $properties = array_replace($this->properties, $properties);
 
-        if ($properties !== null) {
-            $this->properties = $properties;
-        }
+        $this->properties = $properties;
     }
 
     /**
@@ -78,10 +74,8 @@ class PropertyBag implements IteratorAggregate, Countable, ArrayAccess
      *
      * @param string $key     The key
      * @param mixed  $default The default value if the property key does not exist
-     *
-     * @return mixed|null
      */
-    public function get(string $key, $default = null)
+    public function get(string $key, mixed $default = null): mixed
     {
         return array_key_exists($key, $this->properties) ? $this->properties[$key] : $default;
     }
@@ -92,7 +86,7 @@ class PropertyBag implements IteratorAggregate, Countable, ArrayAccess
      * @param string $key   The key
      * @param mixed  $value The value
      */
-    public function set(string $key, $value): void
+    public function set(string $key, mixed $value): void
     {
         $this->properties[$key] = $value;
     }
@@ -134,37 +128,45 @@ class PropertyBag implements IteratorAggregate, Countable, ArrayAccess
     }
 
     /**
-     * @param string|mixed $offset
+     * @param string $offset
      */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
-        return $this->has($offset);
+        return is_string($offset) && $this->has($offset);
     }
 
     /**
-     * @param string|mixed $offset
+     * @param string $offset
      *
      * @return mixed|null
      */
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
+        if (! is_string($offset)) {
+            return null;
+        }
+
         return $this->get($offset);
     }
 
     /**
-     * @param string|mixed $offset
-     * @param mixed|null   $value
+     * @param string     $offset
+     * @param mixed|null $value
      */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
-        $this->set($offset, $value);
+        if (is_string($offset)) {
+            $this->set($offset, $value);
+        }
     }
 
     /**
-     * @param string|mixed $offset
+     * @param string $offset
      */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
-        $this->remove($offset);
+        if (is_string($offset)) {
+            $this->remove($offset);
+        }
     }
 }

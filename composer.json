@@ -21,15 +21,19 @@
         "binsoul/common-i18n": "dev-master"
     },
     "require-dev": {
-        "binsoul/coding-standard": "^1",
-        "phpstan/phpstan": "^1",
-        "phpunit/phpunit": "^9",
+        "binsoul/coding-standard": "^2",
+        "phpstan/phpstan": "^2",
+        "phpunit/phpunit": "^12",
+        "rector/rector": "^2",
         "roave/security-advisories": "dev-latest"
     },
     "autoload": {
         "psr-4": {
             "BinSoul\\Common\\I18n\\Intl\\": "src"
-        }
+        },
+        "exclude-from-classmap": [
+            "/tests/"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -39,7 +43,7 @@
     "scripts": {
         "test": "phpunit",
         "fix-style": "ecs check src tests --config vendor/binsoul/coding-standard/easy-coding-standard.php --fix",
-        "analyze": "phpstan analyse -l max src"
+        "analyze": "phpstan analyse -l max src tests"
     },
     "extra": {
         "branch-alias": {

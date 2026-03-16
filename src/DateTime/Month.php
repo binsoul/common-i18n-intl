@@ -10,18 +10,15 @@ use IntlCalendar;
 class Month extends Point
 {
     /**
-     * @var Year
-     */
-    private $year;
-
-    /**
      * Constructs an instance of this class.
      */
-    public function __construct(int $number, Year $year, PointFactory $periodFactory, IntlDateTimeFormatter $formatter)
-    {
+    public function __construct(
+        int $number,
+        private readonly Year $year,
+        PointFactory $periodFactory,
+        IntlDateTimeFormatter $formatter
+    ) {
         parent::__construct($number, $periodFactory, $formatter);
-
-        $this->year = $year;
     }
 
     public function getNumber(): int

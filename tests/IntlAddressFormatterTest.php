@@ -7,11 +7,15 @@ namespace BinSoul\Test\Common\I18n\Intl;
 use BinSoul\Common\I18n\DefaultAddress;
 use BinSoul\Common\I18n\DefaultLocale;
 use BinSoul\Common\I18n\Intl\IntlAddressFormatter;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class IntlAddressFormatterTest extends TestCase
 {
-    public function countriesAndNames(): array
+    /**
+     * @return array<int, array<int, string>>
+     */
+    public static function countriesAndNames(): array
     {
         return [
             ['DE', 'en', 'Germany'],
@@ -26,9 +30,7 @@ class IntlAddressFormatterTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider countriesAndNames
-     */
+    #[DataProvider('countriesAndNames')]
     public function test_generates_localized_country_names(string $countryCode, string $localeCode, string $countryName): void
     {
         $formatter = new IntlAddressFormatter(DefaultLocale::fromString($localeCode));

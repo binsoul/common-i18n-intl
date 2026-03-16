@@ -13,34 +13,16 @@ use IntlCalendar;
  */
 abstract class Point
 {
-    /**
-     * @var int
-     */
-    protected $number;
-
-    /**
-     * @var PointFactory
-     */
-    protected $factory;
-
-    /**
-     * @var IntlDateTimeFormatter
-     */
-    protected $formatter;
-
-    /**
-     * @var PropertyBag
-     */
-    private $properties;
+    private ?PropertyBag $properties = null;
 
     /**
      * Constructs an instance of this class.
      */
-    public function __construct(int $number, PointFactory $factory, IntlDateTimeFormatter $formatter)
-    {
-        $this->number = $number;
-        $this->factory = $factory;
-        $this->formatter = $formatter;
+    public function __construct(
+        protected int $number,
+        protected PointFactory $factory,
+        protected IntlDateTimeFormatter $formatter
+    ) {
     }
 
     /**
@@ -56,9 +38,7 @@ abstract class Point
      */
     public function getDateTime(): DateTime
     {
-        $calendar = $this->prepareCalendar();
-
-        return $calendar->toDateTime();
+        return $this->prepareCalendar()->toDateTime();
     }
 
     /**

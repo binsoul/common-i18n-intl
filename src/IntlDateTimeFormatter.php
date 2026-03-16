@@ -16,42 +16,42 @@ use IntlDateFormatter;
  */
 class IntlDateTimeFormatter implements DateTimeFormatter
 {
-    public const ATOM = "yyyy-MM-dd'T'HH:mm:ssxxx";
+    public const string ATOM = "yyyy-MM-dd'T'HH:mm:ssxxx";
 
-    public const COOKIE = 'eeee, dd-MMM-yyyy HH:mm:ss zzz';
+    public const string COOKIE = 'eeee, dd-MMM-yyyy HH:mm:ss zzz';
 
-    public const ISO8601_FULL = "yyyy-MM-dd'T'HH:mm:ssxxx";
+    public const string ISO8601_FULL = "yyyy-MM-dd'T'HH:mm:ssxxx";
 
-    public const ISO8601_DATE = 'yyyy-MM-dd';
+    public const string ISO8601_DATE = 'yyyy-MM-dd';
 
-    public const ISO8601_TIME = 'HH:mm:ss';
+    public const string ISO8601_TIME = 'HH:mm:ss';
 
-    public const ISO8601_DATETIME = "yyyy-MM-dd'T'HH:mm:ss";
+    public const string ISO8601_DATETIME = "yyyy-MM-dd'T'HH:mm:ss";
 
-    public const RFC822 = 'eee, dd MMM yy HH:mm:ss xx';
+    public const string RFC822 = 'eee, dd MMM yy HH:mm:ss xx';
 
-    public const RFC850 = 'eeee, dd-MMM-yy HH:mm:ss zzz';
+    public const string RFC850 = 'eeee, dd-MMM-yy HH:mm:ss zzz';
 
-    public const RFC1036 = 'eee, dd MMM yy HH:mm:ss xx';
+    public const string RFC1036 = 'eee, dd MMM yy HH:mm:ss xx';
 
-    public const RFC1123 = 'eee, dd MMM yyyy HH:mm:ss xx';
+    public const string RFC1123 = 'eee, dd MMM yyyy HH:mm:ss xx';
 
-    public const RFC2822 = 'eee, dd MMM yyyy HH:mm:ss xx';
+    public const string RFC2822 = 'eee, dd MMM yyyy HH:mm:ss xx';
 
-    public const RFC3339 = "yyyy-MM-dd'T'HH:mm:ssxxx";
+    public const string RFC3339 = "yyyy-MM-dd'T'HH:mm:ssxxx";
 
-    public const RFC3339_EXTENDED = "yyyy-MM-dd'T'HH:mm:ss.SSSxxx";
+    public const string RFC3339_EXTENDED = "yyyy-MM-dd'T'HH:mm:ss.SSSxxx";
 
-    public const RFC7231 = "eee, dd MMM yyyy HH:mm:ss 'GMT'";
+    public const string RFC7231 = "eee, dd MMM yyyy HH:mm:ss 'GMT'";
 
-    public const RSS = 'eee, dd MMM yyyy HH:mm:ss xx';
+    public const string RSS = 'eee, dd MMM yyyy HH:mm:ss xx';
 
-    public const W3C = "yyyy-MM-dd'T'HH:mm:ssxxx";
+    public const string W3C = "yyyy-MM-dd'T'HH:mm:ssxxx";
 
     /**
      * @var string[]
      */
-    private static $knownPatterns = [
+    private static array $knownPatterns = [
         self::ATOM,
         self::COOKIE,
         self::ISO8601_FULL,
@@ -73,7 +73,7 @@ class IntlDateTimeFormatter implements DateTimeFormatter
     /**
      * @var string[]
      */
-    private static $expansionPatterns = [
+    private static array $expansionPatterns = [
         '/(?<!y)yy(?!y)/' => 'y', // 4 digit year
         '/(?<!M)M(?!M)/' => 'MM', // 2 digit month
         '/(?<!d)d(?!d)/' => 'dd', // 2 digit day
@@ -86,7 +86,7 @@ class IntlDateTimeFormatter implements DateTimeFormatter
     /**
      * @var string[]
      */
-    private static $phpToIcu = [
+    private static array $phpToIcu = [
         'd' => 'dd',
         'D' => 'eee',
         'j' => 'd',
@@ -121,7 +121,7 @@ class IntlDateTimeFormatter implements DateTimeFormatter
         'P' => 'xxx',
         'T' => 'zzz',
         'Z' => '',
-        'c' => 'yyyy-MM-dd\'T\'HH:mm:ssxxx',
+        'c' => "yyyy-MM-dd'T'HH:mm:ssxxx",
         'r' => 'eee, dd MMM yyyy HH:mm:ss xx',
         'U' => '',
         'v' => 'SSS',
@@ -130,12 +130,9 @@ class IntlDateTimeFormatter implements DateTimeFormatter
     /**
      * @var IntlDateFormatter[][]
      */
-    private $formatters = [];
+    private array $formatters = [];
 
-    /**
-     * @var Locale
-     */
-    private $locale;
+    private readonly Locale $locale;
 
     /**
      * Constructs an instance of this class.
@@ -150,7 +147,10 @@ class IntlDateTimeFormatter implements DateTimeFormatter
             foreach ($types as $timetype) {
                 $formatter = new IntlDateFormatter($this->locale->getCode(), $datetype, $timetype);
                 $pattern = $formatter->getPattern();
-                $formatter->setPattern($this->expandNumbers($pattern));
+
+                if ($pattern !== false) {
+                    $formatter->setPattern($this->expandNumbers($pattern));
+                }
 
                 $this->formatters[$datetype][$timetype] = $formatter;
             }
@@ -164,47 +164,61 @@ class IntlDateTimeFormatter implements DateTimeFormatter
         $formatter->setPattern($format);
 
         if ($this->isKnownPattern($pattern)) {
-            return $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::NONE]::formatObject($datetime, $format, 'en');
+            $result = $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::NONE]::formatObject($datetime, $format, 'en');
+
+            return $result !== false ? $result : '';
         }
 
         $formatter->setTimeZone($datetime->getTimezone());
 
-        return $formatter->format($datetime);
+        $result = $formatter->format($datetime);
+
+        return $result !== false ? $result : '';
     }
 
     public function formatTime(DateTimeInterface $time): string
     {
         $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::SHORT]->setTimeZone($time->getTimezone());
 
-        return $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::SHORT]->format($time);
+        $result = $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::SHORT]->format($time);
+
+        return $result !== false ? $result : '';
     }
 
     public function formatTimeWithSeconds(DateTimeInterface $time): string
     {
         $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::MEDIUM]->setTimeZone($time->getTimezone());
 
-        return $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::MEDIUM]->format($time);
+        $result = $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::MEDIUM]->format($time);
+
+        return $result !== false ? $result : '';
     }
 
     public function formatDate(DateTimeInterface $date): string
     {
         $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::NONE]->setTimeZone($date->getTimezone());
 
-        return $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::NONE]->format($date);
+        $result = $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::NONE]->format($date);
+
+        return $result !== false ? $result : '';
     }
 
     public function formatDateTime(DateTimeInterface $datetime): string
     {
         $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::SHORT]->setTimeZone($datetime->getTimezone());
 
-        return $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::SHORT]->format($datetime);
+        $result = $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::SHORT]->format($datetime);
+
+        return $result !== false ? $result : '';
     }
 
     public function formatDateTimeWithSeconds(DateTimeInterface $datetime): string
     {
         $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::MEDIUM]->setTimeZone($datetime->getTimezone());
 
-        return $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::MEDIUM]->format($datetime);
+        $result = $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::MEDIUM]->format($datetime);
+
+        return $result !== false ? $result : '';
     }
 
     public function withLocale(Locale $locale): DateTimeFormatter
@@ -219,26 +233,29 @@ class IntlDateTimeFormatter implements DateTimeFormatter
     /**
      * Formats an object.
      *
-     * @param DateTimeInterface|IntlCalendar $object
-     * @param string|int[]|int|null          $pattern
+     * @param string|array<int, int>|int|null $pattern
      */
-    public function formatObject($object, $pattern = null, ?string $locale = null): string
+    public function formatObject(DateTimeInterface|IntlCalendar $object, string|int|array|null $pattern = null, ?string $locale = null): string
     {
         $format = $pattern;
 
         if (is_string($pattern)) {
             if ($object instanceof DateTimeInterface) {
                 $format = $this->injectTimeZone($object, $pattern);
-            } elseif ($object instanceof IntlCalendar) {
+            } else {
                 $format = $this->injectTimeZone($object->toDateTime(), $pattern);
             }
 
             if ($this->isKnownPattern($pattern)) {
-                return $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::NONE]::formatObject($object, $format, 'en');
+                $result = $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::NONE]::formatObject($object, $format, 'en');
+
+                return $result !== false ? $result : '';
             }
         }
 
-        return $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::NONE]::formatObject($object, $format, $locale ?? $this->locale->getCode());
+        $result = $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::NONE]::formatObject($object, $format, $locale ?? $this->locale->getCode());
+
+        return $result !== false ? $result : '';
     }
 
     /**
@@ -246,7 +263,9 @@ class IntlDateTimeFormatter implements DateTimeFormatter
      */
     public function getTimePattern(): string
     {
-        return $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::SHORT]->getPattern();
+        $result = $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::SHORT]->getPattern();
+
+        return $result !== false ? $result : '';
     }
 
     /**
@@ -254,7 +273,9 @@ class IntlDateTimeFormatter implements DateTimeFormatter
      */
     public function getTimeWithSecondsPattern(): string
     {
-        return $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::MEDIUM]->getPattern();
+        $result = $this->formatters[IntlDateFormatter::NONE][IntlDateFormatter::MEDIUM]->getPattern();
+
+        return $result !== false ? $result : '';
     }
 
     /**
@@ -262,7 +283,9 @@ class IntlDateTimeFormatter implements DateTimeFormatter
      */
     public function getDatePattern(): string
     {
-        return $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::NONE]->getPattern();
+        $result = $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::NONE]->getPattern();
+
+        return $result !== false ? $result : '';
     }
 
     /**
@@ -270,7 +293,9 @@ class IntlDateTimeFormatter implements DateTimeFormatter
      */
     public function getDateTimePattern(): string
     {
-        return $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::SHORT]->getPattern();
+        $result = $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::SHORT]->getPattern();
+
+        return $result !== false ? $result : '';
     }
 
     /**
@@ -278,7 +303,9 @@ class IntlDateTimeFormatter implements DateTimeFormatter
      */
     public function getDateTimeWithSecondsPattern(): string
     {
-        return $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::MEDIUM]->getPattern();
+        $result = $this->formatters[IntlDateFormatter::SHORT][IntlDateFormatter::MEDIUM]->getPattern();
+
+        return $result !== false ? $result : '';
     }
 
     /**
@@ -346,7 +373,7 @@ class IntlDateTimeFormatter implements DateTimeFormatter
     {
         $result = $pattern;
 
-        if (strpos($pattern, 'z') !== false) {
+        if (str_contains($pattern, 'z')) {
             $result = preg_replace('/(?<!z)z{1,3}(?!z)/', "'" . $datetime->format('T') . "'", $pattern);
 
             if ($result === null) {

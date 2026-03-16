@@ -18,17 +18,11 @@ use IntlTimeZone;
 /**
  * Represents a calendar for a time zone and a locale.
  */
-class Calendar
+readonly class Calendar
 {
-    /**
-     * @var IntlDateTimeFormatter
-     */
-    private $formatter;
+    private IntlDateTimeFormatter $formatter;
 
-    /**
-     * @var PointFactory
-     */
-    private $factory;
+    private PointFactory $factory;
 
     /**
      * Constructs an instance of this class.

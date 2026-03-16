@@ -70,9 +70,9 @@ class IntlNumberFormatterTest extends TestCase
         self::assertEquals('€100,000,001.12', $formatter->formatCurrency(100000001.12345, 'EUR'));
 
         $formatter = new IntlNumberFormatter(DefaultLocale::fromString('ar-EG'));
-        self::assertEquals('؜-١٬٠٠١٫١٢ €', $formatter->formatCurrency(-1001.12345, 'EUR'));
-        self::assertEquals('١٬٠٠١٫١٢ €', $formatter->formatCurrency(1001.12345, 'EUR'));
-        self::assertEquals('١٠٠٬٠٠٠٬٠٠١٫١٢ €', $formatter->formatCurrency(100000001.12345, 'EUR'));
+        self::assertEquals('؜-‏١٬٠٠١٫١٢ €', $formatter->formatCurrency(-1001.12345, 'EUR'));
+        self::assertEquals('‏١٬٠٠١٫١٢ €', $formatter->formatCurrency(1001.12345, 'EUR'));
+        self::assertEquals('‏١٠٠٬٠٠٠٬٠٠١٫١٢ €', $formatter->formatCurrency(100000001.12345, 'EUR'));
     }
 
     public function test_returns_percent_symbol(): void
@@ -93,21 +93,30 @@ class IntlNumberFormatterTest extends TestCase
         self::assertEquals('$', $formatter->getCurrencySymbol('USD'));
         self::assertEquals('CA$', $formatter->getCurrencySymbol('CAD'));
 
-        self::assertEquals($formatter->formatCurrency(-1001.12345) . ' ', str_replace($formatter->getCurrencySymbol('EUR'), '', $formatter->formatCurrency(-1001.12345, 'EUR')));
+        self::assertEquals(
+            str_replace(["\u{200E}", "\u{200F}", "\u{061C}"], '', $formatter->formatCurrency(-1001.12345) . ' '),
+            str_replace(["\u{200E}", "\u{200F}", "\u{061C}"], '', str_replace($formatter->getCurrencySymbol('EUR'), '', $formatter->formatCurrency(-1001.12345, 'EUR'))),
+        );
 
         $formatter = new IntlNumberFormatter(DefaultLocale::fromString('en-CA'));
         self::assertEquals('€', $formatter->getCurrencySymbol('EUR'));
         self::assertEquals('US$', $formatter->getCurrencySymbol('USD'));
         self::assertEquals('$', $formatter->getCurrencySymbol('CAD'));
 
-        self::assertEquals($formatter->formatCurrency(-1001.12345), str_replace($formatter->getCurrencySymbol('EUR'), '', $formatter->formatCurrency(-1001.12345, 'EUR')));
+        self::assertEquals(
+            str_replace(["\u{200E}", "\u{200F}", "\u{061C}"], '', $formatter->formatCurrency(-1001.12345)),
+            str_replace(["\u{200E}", "\u{200F}", "\u{061C}"], '', str_replace($formatter->getCurrencySymbol('EUR'), '', $formatter->formatCurrency(-1001.12345, 'EUR'))),
+        );
 
         $formatter = new IntlNumberFormatter(DefaultLocale::fromString('ar-EG'));
         self::assertEquals('€', $formatter->getCurrencySymbol('EUR'));
         self::assertEquals('US$', $formatter->getCurrencySymbol('USD'));
         self::assertEquals('CA$', $formatter->getCurrencySymbol('CAD'));
 
-        self::assertEquals($formatter->formatCurrency(-1001.12345) . ' ', str_replace($formatter->getCurrencySymbol('EUR'), '', $formatter->formatCurrency(-1001.12345, 'EUR')));
+        self::assertEquals(
+            str_replace(["\u{200E}", "\u{200F}", "\u{061C}"], '', $formatter->formatCurrency(-1001.12345) . ' '),
+            str_replace(["\u{200E}", "\u{200F}", "\u{061C}"], '', str_replace($formatter->getCurrencySymbol('EUR'), '', $formatter->formatCurrency(-1001.12345, 'EUR'))),
+        );
     }
 
     public function test_with_locale(): void

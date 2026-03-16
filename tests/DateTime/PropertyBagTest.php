@@ -6,11 +6,15 @@ namespace BinSoul\Test\Common\I18n\Intl\DateTime;
 
 use BinSoul\Common\I18n\Intl\DateTime\PropertyBag;
 use DateTime;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class PropertyBagTest extends TestCase
 {
-    public function properties(): array
+    /**
+     * @return array<int, array<int, mixed>>
+     */
+    public static function properties(): array
     {
         return [
             [null],
@@ -23,10 +27,8 @@ class PropertyBagTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider properties
-     */
-    public function test_get_and_set($property): void
+    #[DataProvider('properties')]
+    public function test_get_and_set(int|bool|string|DateTime|null $property): void
     {
         $bag = new PropertyBag();
         $bag->set('prop1', $property);
@@ -41,10 +43,8 @@ class PropertyBagTest extends TestCase
         self::assertEquals('missing', $bag->get('prop1', 'missing'));
     }
 
-    /**
-     * @dataProvider properties
-     */
-    public function test_array_access($property): void
+    #[DataProvider('properties')]
+    public function test_array_access(int|bool|string|DateTime|null $property): void
     {
         $bag = new PropertyBag();
         $bag['prop1'] = $property;
@@ -56,10 +56,8 @@ class PropertyBagTest extends TestCase
         self::assertFalse(isset($bag['prop1']));
     }
 
-    /**
-     * @dataProvider properties
-     */
-    public function test_returns_iterator($property): void
+    #[DataProvider('properties')]
+    public function test_returns_iterator(int|bool|string|DateTime|null $property): void
     {
         $bag = new PropertyBag(['prop1' => $property]);
 
