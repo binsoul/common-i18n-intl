@@ -36,7 +36,7 @@ class Week extends Point
         $calendar = $this->prepareCalendar();
 
         if ($calendar->get(IntlCalendar::FIELD_YEAR) !== $this->year->getNumber()) {
-            $calendar->set(IntlCalendar::FIELD_YEAR, $this->year->getNumber());
+            $calendar = $this->getLastDay()->prepareCalendar();
         }
 
         return $this->formatter->formatObject($calendar, 'ww yyyy');
