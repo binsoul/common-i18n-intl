@@ -126,29 +126,17 @@ class Day extends Point
     public function getWeek(): Week
     {
         $calendar = $this->prepareCalendar();
-        $calendar->add(IntlCalendar::FIELD_DATE, -7);
+        $week = $calendar->get(IntlCalendar::FIELD_WEEK_OF_YEAR);
 
-        $previousYear = $calendar->get(IntlCalendar::FIELD_YEAR);
-        $previousWeek = $calendar->get(IntlCalendar::FIELD_WEEK_OF_YEAR);
+        $calendar->set(IntlCalendar::FIELD_DOW_LOCAL, 1);
+        $month = $calendar->get(IntlCalendar::FIELD_MONTH);
+        $year = $calendar->get(IntlCalendar::FIELD_YEAR);
 
-        $calendar = $this->prepareCalendar();
-        $firstMonth = $calendar->getActualMinimum(IntlCalendar::FIELD_MONTH);
-        $lastWeekOfMonth = $calendar->getActualMaximum(IntlCalendar::FIELD_WEEK_OF_MONTH);
-
-        $year = $this->getYear()->getNumber();
-
-        $currentYear = $calendar->get(IntlCalendar::FIELD_YEAR);
-        $currentWeek = $calendar->get(IntlCalendar::FIELD_WEEK_OF_YEAR);
-
-        if ($currentWeek > $lastWeekOfMonth && $this->month->getNumber() - 1 === $firstMonth) {
-            $year--;
-        }
-
-        if ($previousWeek > $currentWeek && $previousYear === $currentYear) {
+        if ($week === 1 && $month == 11) {
             $year++;
         }
 
-        return $this->factory->getWeek($calendar->get(IntlCalendar::FIELD_WEEK_OF_YEAR), $year);
+        return $this->factory->getWeek($week, $year);
     }
 
     /**

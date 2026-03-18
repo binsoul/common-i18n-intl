@@ -94,11 +94,8 @@ class PointFactory
 
         $actualWeek = $this->internalCalendar->get(IntlCalendar::FIELD_WEEK_OF_YEAR);
 
-        if ($actualWeek < $week) {
-            $year++;
-            $week = $actualWeek;
-        } elseif ($actualWeek > $week) {
-            $year--;
+        if ($actualWeek != $week) {
+            $year = $this->internalCalendar->get(IntlCalendar::FIELD_YEAR);
             $week = $actualWeek;
         }
 

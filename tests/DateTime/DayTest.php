@@ -7,6 +7,7 @@ namespace BinSoul\Test\Common\I18n\Intl\DateTime;
 use BinSoul\Common\I18n\DefaultLocale;
 use BinSoul\Common\I18n\Intl\DateTime\Calendar;
 use BinSoul\Common\I18n\Intl\DateTime\PropertyBag;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class DayTest extends TestCase
@@ -41,32 +42,55 @@ class DayTest extends TestCase
         self::assertFalse($day1->isSameday($day2));
     }
 
-    public function test_returns_week_end_of_year(): void
+    #[DataProvider('weekDataProvider')]
+    public function test_returns_week(string $locale, int $day, int $month, int $year, int $expectedWeek, int $expectedYear): void
     {
-        $calendar = new Calendar(new DefaultLocale('de-DE'));
+        $calendar = new Calendar(new DefaultLocale($locale));
+        $dayObj = $calendar->getDay($day, $month, $year);
 
-        $day = $calendar->getDay(31, 12, 2019);
-
-        self::assertEquals(1, $day->getWeek()->getNumber());
-        self::assertEquals(2020, $day->getWeek()->getYear()->getNumber());
+        self::assertEquals($expectedWeek, $dayObj->getWeek()->getNumber(), "Failed for {$locale} {$year}-{$month}-{$day}");
+        self::assertEquals($expectedYear, $dayObj->getWeek()->getYear()->getNumber(), "Failed Year for {$locale} {$year}-{$month}-{$day}");
     }
 
-    public function test_returns_week_start_of_year(): void
+    /**
+     * @return array<string, array{string, int, int, int, int, int}>
+     */
+    public static function weekDataProvider(): array
     {
-        $calendar = new Calendar(new DefaultLocale('de-DE'));
+        return [
+            // Germany (ISO-8601)
+            'DE 2019-12-31' => ['de-DE', 31, 12, 2019, 1, 2020],
+            'DE 2021-01-01' => ['de-DE', 1, 1, 2021, 53, 2020],
+            'DE 2022-01-01' => ['de-DE', 1, 1, 2022, 52, 2021],
+            'DE 2022-01-03' => ['de-DE', 3, 1, 2022, 1, 2022],
+            'DE 2025-12-28' => ['de-DE', 28, 12, 2025, 52, 2025],
+            'DE 2025-12-29' => ['de-DE', 29, 12, 2025, 1, 2026],
+            'DE 2026-12-28' => ['de-DE', 28, 12, 2026, 53, 2026],
+            'DE 2027-01-03' => ['de-DE', 3, 1, 2027, 53, 2026],
+            'DE 2027-01-04' => ['de-DE', 4, 1, 2027, 1, 2027],
 
-        $day = $calendar->getDay(1, 1, 2021);
+            // Egypt (Arabic, often starts on Saturday)
+            'EG 2026-12-25' => ['ar-EG', 25, 12, 2026, 52, 2026],
+            'EG 2026-12-26' => ['ar-EG', 26, 12, 2026, 1, 2027],
 
-        self::assertEquals(53, $day->getWeek()->getNumber());
-        self::assertEquals(2020, $day->getWeek()->getYear()->getNumber());
+            // US (Starts on Sunday)
+            'US 2025-01-01' => ['en-US', 1, 1, 2025, 1, 2025],
+            'US 2026-12-26' => ['en-US', 26, 12, 2026, 52, 2026],
+            'US 2026-12-27' => ['en-US', 27, 12, 2026, 1, 2027],
+            'US 2027-01-01' => ['en-US', 1, 1, 2027, 1, 2027],
 
-        $day = $calendar->getDay(1, 1, 2022);
-        self::assertEquals(52, $day->getWeek()->getNumber());
-        self::assertEquals(2021, $day->getWeek()->getYear()->getNumber());
+            // Iran (Persian, starts on Saturday)
+            'IR 2026-12-26' => ['fa-IR', 26, 12, 2026, 52, 2026],
+            'IR 2027-01-01' => ['fa-IR', 1, 1, 2027, 1, 2027],
+            'IR 2027-03-21' => ['fa-IR', 21, 3, 2027, 13, 2027],
 
-        $day = $calendar->getDay(3, 1, 2022);
-        self::assertEquals(1, $day->getWeek()->getNumber());
-        self::assertEquals(2022, $day->getWeek()->getYear()->getNumber());
+            // Thailand
+            'TH 2025-01-01' => ['th-TH', 1, 1, 2025, 1, 2025],
+            'TH 2027-01-01' => ['th-TH', 1, 1, 2027, 1, 2027],
+            'TH 2028-12-30' => ['th-TH', 30, 12, 2028, 53, 2028],
+            'TH 2028-12-31' => ['th-TH', 31, 12, 2028, 53, 2028],
+            'TH 2029-01-01' => ['th-TH', 1, 1, 2029, 1, 2029],
+        ];
     }
 
     public function test_returns_next_day(): void
